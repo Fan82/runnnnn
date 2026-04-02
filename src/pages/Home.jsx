@@ -21,7 +21,7 @@ function Home() {
 
       {/* greeting */}
       <span className="text-muted">Good morning</span>
-      <h2 className="text-bold text-2xl mb-4">Mike Chen</h2>
+      <h2 className="text-bold text-2xl mb-4">Timmy Chan</h2>
       {/* User's ranking */}
       <div className="mt-3 mb-3">
         {/* stats big card */}
@@ -51,7 +51,14 @@ function Home() {
       {/* friend's ranking */}
       <p className="mb-3">Friend's ranking</p>
       <div className="flex-between flex-col">
-        <FriendRow />
+        <FriendRow
+          row={{
+            name: "Mike Chen",
+            lastRun: "2 hours ago",
+            stats: { distanceKm: 5.2, timeMin: 32, pace: "6'09\"" },
+            weeklyKm: "42",
+          }}
+        />
       </div>
       {/*start running button*/}
       <button onClick={() => navigate("/running")} className="button-main">

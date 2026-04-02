@@ -9,7 +9,7 @@ function Friends() {
     <div className="page-wrapper">
       <div className="header">
         <div className="nav">
-          <button onClick={() => navigate("/")} className="p-2">
+          <button onClick={() => navigate("/searchpage")} className="p-2">
             <Search size={16} />
           </button>
           <button onClick={() => navigate("/")} className="p-2">
@@ -21,7 +21,7 @@ function Friends() {
       {/* story */}
       <div className="flex gap-2 w-full mt-12 overflow-x-auto snap-x scroll-pl-6">
         <div className="circle-avatar inset-ring-0 bg-mainBrand">
-          <Plus className="size-6" />
+          <Plus size={32} />
         </div>
         <div className="circle-avatar inset-ring-green-400">
           <img

@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { MoveLeft, Pause, Play, Camera, Square } from "lucide-react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import RunMap from "../components/RunMap";
 
 // 模擬跑步座標（東京）
 const FAKE_COORDS = [
@@ -26,9 +25,6 @@ function Running() {
   const [time, setTime] = useState(0);
   const timerRef = useRef(null);
   const simulateRef = useRef(null);
-  const mapRef = useRef(null);
-  const leafletMap = useRef(null);
-  const polylineRef = useRef(null);
 
   // 計算兩點之間距離（km）
   const calcDistance = (a, b) => {
@@ -87,10 +83,6 @@ function Running() {
     setCoords([]);
     setDistance(0);
     setTime(0);
-    // 地圖路線也清掉
-    if (polylineRef.current) {
-      polylineRef.current.setLatLngs([]);
-    }
   };
 
   const formatTime = (s) => {
@@ -100,32 +92,6 @@ function Running() {
     const sec = (s % 60).toString().padStart(2, "0");
     return `${m}:${sec}`;
   };
-
-  // 頁面載入時建立地圖
-  useEffect(() => {
-    if (leafletMap.current) return;
-
-    leafletMap.current = L.map(mapRef.current, { zoomControl: false }).setView(
-      [FAKE_COORDS[0].lat, FAKE_COORDS[0].lng],
-      16,
-    );
-    // CartoDB Light
-    L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    ).addTo(leafletMap.current);
-    polylineRef.current = L.polyline([], { color: "#05df72", weight: 4 }).addTo(
-      leafletMap.current,
-    );
-  }, []);
-
-  // 跑步中更新路線
-  useEffect(() => {
-    if (coords.length === 0 || !leafletMap.current) return;
-    const latLngs = coords.map((c) => [c.lat, c.lng]);
-    polylineRef.current.setLatLngs(latLngs);
-    const last = coords[coords.length - 1];
-    leafletMap.current.setView([last.lat, last.lng], 16);
-  }, [coords]);
 
   return (
     <div className="page-wrapper">
@@ -159,11 +125,7 @@ function Running() {
           </h6>
         </div>
       </div>
-      <div
-        ref={mapRef}
-        style={{ height: "200px", width: "100%" }}
-        className="rounded-2xl overflow-hidden"
-      />
+      <RunMap coords={coords} live={true} />
       <div className="flex-between items-center justify-center mt-4">
         <button
           onClick={resetRunning}

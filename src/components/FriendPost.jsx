@@ -1,31 +1,63 @@
+import { useState } from "react";
 import { Ellipsis, Heart, MessageCircle, Share } from "lucide-react";
 import RunMap from "./RunMap";
 
 function FriendPost({ post }) {
-  const name = post?.name ?? "Friend 1";
-  const timeAgo = post?.timeAgo ?? "2 hours ago";
+  const name = post?.name;
+  const timeAgo = post?.timeAgo;
   const stats = post?.stats;
   const coords = post?.coords;
+
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(post?.likes ?? 24);
+
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikes(liked ? likes - 1 : likes + 1);
+  };
+
+  const [showMenu, setShowMenu] = useState(false);
+
   return (
-    <div className="relative flex flex-col gap-2 w-full mt-8 pb-8 inset-shadow-[0px_-1px_0px_rgba(255,255,255,0.1)] z-1">
+    <div className="relative flex flex-col gap-2 w-full mt-8 pb-8 inset-shadow-[0px_-1px_0px_rgba(255,255,255,0.1)]">
       {/* user info+ time */}
-      <div className="flex gap-4 items-center mb-2">
+      <div className="flex gap-4 items-center justify-between mb-2 z-1">
         <div className="circle-avatar size-13">
           <img
             src="https://i.pravatar.cc/150?img=1"
             className="circle-avatarImage"
           />
         </div>
-        <div>
+        <div className="flex-3">
           <h6 className="text-zinc-100 font-medium">{name}</h6>
           <p className="text-sm text-zinc-100/50">{timeAgo}</p>
         </div>
+        <div className="relative">
+          <button onClick={() => setShowMenu(!showMenu)} className="p-2">
+            <Ellipsis size={16} className="stroke-zinc-100/50" />
+          </button>
+
+          {showMenu && (
+            <div className="absolute right-0 top-8 bg-zinc-800 rounded-2xl overflow-hidden z-10 min-w-40">
+              <button className="w-full text-left px-4 py-3 text-sm text-zinc-100 hover:bg-zinc-700">
+                Not interested
+              </button>
+              <button className="w-full text-left px-4 py-3 text-sm text-zinc-100 hover:bg-zinc-700">
+                Mute
+              </button>
+              <button className="w-full text-left px-4 py-3 text-sm text-zinc-100 hover:bg-zinc-700">
+                Block
+              </button>
+              <div className="border-t border-zinc-700" />
+              <button className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-zinc-700">
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      <p className="absolute right-4 p-4 text-zinc-100/50 text-base font-bold">
-        <Ellipsis className="size-4" />
-      </p>
       {/* data */}
-      <div className="bg-zinc-100/10 rounded-2xl px-2 py-2">
+      <div className="bg-zinc-100/10 rounded-2xl px-2 py-2 z-0">
         <div className="flex flex-between ">
           <div className="p-2 flex-1">
             <p className="text-muted">Distance</p>
@@ -54,18 +86,25 @@ function FriendPost({ post }) {
       {/* Post typing */}
       <div className="text-bold">Moring run in the park! Feel AMAZING 🌞</div>
       <div className="flex items-center text-muted gap-4 mt-2">
-        <div className="flex gap-1">
-          <Heart className="size-5" />
-          <p>24</p>
-        </div>
-        <div className="flex gap-1">
-          <MessageCircle className="size-5" />
-          <p>3</p>
-        </div>
-        <div className="flex gap-1">
-          <Share className="size-5" />
-          <p>12</p>
-        </div>
+        <button onClick={handleLike} className="flex items-center gap-1.5">
+          <Heart
+            size={18}
+            className={
+              liked ? "fill-red-500 stroke-red-500" : "stroke-zinc-100/50"
+            }
+          />
+          <span className="text-muted text-sm">{likes}</span>
+        </button>
+
+        <button className="flex items-center gap-1.5">
+          <MessageCircle size={18} className="stroke-zinc-100/50" />
+          <span className="text-muted text-sm">{post?.comments ?? 3}</span>
+        </button>
+
+        <button className="flex items-center gap-1.5">
+          <Share size={18} className="stroke-zinc-100/50" />
+          <span className="text-muted text-sm">{post?.shares ?? 12}</span>
+        </button>
       </div>
     </div>
   );

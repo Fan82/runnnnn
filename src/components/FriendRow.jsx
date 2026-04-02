@@ -1,4 +1,9 @@
-function FriendRow({ name, lastRun, weeklyKm }) {
+function FriendRow({ row }) {
+  const name = row?.name;
+  const lastRun = row?.lastRun ?? "--";
+  const stats = row?.stats;
+  const weeklyKm = row?.weeklyKm ?? "--";
+
   return (
     <div className="flex justify-between items-center rounded-2xl bg-zinc-100/10 p-4 w-full">
       <div className="flex gap-1.5 items-center">
@@ -9,14 +14,15 @@ function FriendRow({ name, lastRun, weeklyKm }) {
           />
         </div>
         <div>
-          <h6 className="text-zinc-100 font-medium">Friend 1</h6>
+          <h6 className="text-zinc-100 font-medium">{name}</h6>
           <p className="text-sm text-zinc-100/50">
-            Ran 21 km and 50 min yesterday
+            Ran {lastRun} and {stats?.pace ?? `6'09"`}
           </p>
         </div>
       </div>
       <p className="text-mainBrand text-base font-bold">
-        52.2 <span className="ml-0.5">km</span>
+        {weeklyKm}
+        <span className="ml-0.5">km</span>
       </p>
     </div>
   );
