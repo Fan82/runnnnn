@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Running from "./pages/Running";
 import Friends from "./pages/Friends";
 import SearchPage from "./pages/SearchPage";
+import AddPost from "./pages/AddPost";
 import Map from "./pages/Map";
 import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
@@ -21,6 +22,7 @@ function App() {
         />
         <Route path="/friends" element={<Friends />} />
         <Route path="/searchpage" element={<SearchPage />} />
+        <Route path="/addpost" element={<AddPost />} />
         <Route path="/map" element={<Map />} />
         <Route path="/running" element={<Running />} />
         <Route path="/login" element={<Login />} />

@@ -4,11 +4,12 @@
 @theme {
     --color-bg: #141418;
     --color-mainBrand: #05df72;
+    --inset-shadow-md: inset 0 3px #05df72;
 }
 
 @layer components {
     .page-wrapper {
-        @apply bg-bg min-h-screen w-full max-w-[100vw] flex flex-col text-zinc-100 p-8 pt-16;
+        @apply bg-bg min-h-screen w-full max-w-[100vw] text-zinc-100 px-4 pt-8 pb-16;
     }
 
     .text-muted {
@@ -37,7 +38,7 @@
     }
 
     .header-Font {
-        @apply text-zinc-100 font-bold text-xl leading-10;
+        @apply text-zinc-100 font-bold text-xl leading-10 text-left;
     }
 
     .nav {
@@ -49,7 +50,7 @@
     }
 
     .circle-avatarImage {
-        @apply size-13 rounded-4xl object-cover
+        @apply size-14 rounded-4xl object-cover
     }
 
     .run-card {

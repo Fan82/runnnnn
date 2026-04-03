@@ -68,14 +68,14 @@ function FriendPost({ post }) {
           </div>
           <div className="p-2 flex-1">
             <p className="text-muted">Time</p>
-            <h6 className="text-bold text-zinc-100 text-xl">
+            <h6 className="text-bold text-mainBrand text-xl">
               {stats?.timeMin ?? 32}
               <span className="ml-1.5 text-muted">min</span>
             </h6>
           </div>
           <div className="p-2 flex-1">
             <p className="text-muted">Pace</p>
-            <h6 className="text-bold text-zinc-100 text-xl">
+            <h6 className="text-bold text-mainBrand text-xl">
               {stats?.pace ?? `6'09"`}
               <span className="ml-1.5 text-muted">/km</span>
             </h6>
