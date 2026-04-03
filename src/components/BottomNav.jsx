@@ -12,7 +12,7 @@ function BottomNav() {
   ];
 
   return (
-    <div className="sticky bottom-0 right-0 left-0 w-full flex justify-center bg-bg z-2">
+    <div className="sticky bottom-0 right-0 left-0 w-full flex justify-center bg-bg z-1">
       {items.map((item) => {
         const active = location.pathname === item.path;
         return (

@@ -8,7 +8,7 @@
 
 @layer components {
     .page-wrapper {
-        @apply bg-bg min-h-screen w-full max-w-[100vw] flex-col text-zinc-100 p-8;
+        @apply bg-bg min-h-screen w-full max-w-[100vw] flex flex-col text-zinc-100 p-8 pt-16;
     }
 
     .text-muted {
@@ -32,7 +32,7 @@
     }
 
     .header {
-        @apply fixed left-0 top-0 w-full px-8 py-4 text-zinc-100/50 text-sm font-normal text-center bg-bg z-2;
+        @apply fixed left-0 top-0 w-full px-8 py-4 text-zinc-100/50 text-sm font-normal text-center bg-bg z-10;
 
     }
 
@@ -45,13 +45,18 @@
     }
 
     .circle-avatar {
-        @apply size-15 shrink-0 rounded-full bg-zinc-50/10 overflow-hidden inset-ring-4 inset-ring-zinc-100/10 flex items-center justify-center;
+        @apply shrink-0 rounded-full bg-zinc-50/10 overflow-hidden inset-ring-4 inset-ring-zinc-100/10 flex items-center justify-center;
     }
 
     .circle-avatarImage {
         @apply size-13 rounded-4xl object-cover
     }
 
+    .run-card {
+        @apply flex justify-between items-center rounded-2xl bg-zinc-100/10 p-4 w-full;
+    }
+}
 
-
+.leaflet-container {
+    z-index: 0;
 }

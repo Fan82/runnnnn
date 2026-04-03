@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { MoveLeft, Pause, Play, Camera, Square } from "lucide-react";
+import { ChevronLeft, Pause, Play, Camera, Square } from "lucide-react";
 import RunMap from "../components/RunMap";
 
 // 模擬跑步座標（東京）
@@ -98,7 +98,7 @@ function Running() {
       <div className="header">
         <div className="nav right-auto left-4">
           <button onClick={() => navigate("/")} className="p-2">
-            <MoveLeft size={16} />
+            <ChevronLeft size={32} />
           </button>
         </div>
         <h6 className="header-Font">Running</h6>

@@ -21,7 +21,7 @@ function FriendPost({ post }) {
   return (
     <div className="relative flex flex-col gap-2 w-full mt-8 pb-8 inset-shadow-[0px_-1px_0px_rgba(255,255,255,0.1)]">
       {/* user info+ time */}
-      <div className="flex gap-4 items-center justify-between mb-2 z-1">
+      <div className="flex gap-4 items-center justify-between mb-2">
         <div className="circle-avatar size-13">
           <img
             src="https://i.pravatar.cc/150?img=1"
@@ -32,13 +32,13 @@ function FriendPost({ post }) {
           <h6 className="text-zinc-100 font-medium">{name}</h6>
           <p className="text-sm text-zinc-100/50">{timeAgo}</p>
         </div>
-        <div className="relative">
+        <div className="relative z-1">
           <button onClick={() => setShowMenu(!showMenu)} className="p-2">
             <Ellipsis size={16} className="stroke-zinc-100/50" />
           </button>
 
           {showMenu && (
-            <div className="absolute right-0 top-8 bg-zinc-800 rounded-2xl overflow-hidden z-10 min-w-40">
+            <div className="absolute right-0 top-8 bg-zinc-800 rounded-2xl overflow-hidden min-w-40">
               <button className="w-full text-left px-4 py-3 text-sm text-zinc-100 hover:bg-zinc-700">
                 Not interested
               </button>
@@ -57,7 +57,7 @@ function FriendPost({ post }) {
         </div>
       </div>
       {/* data */}
-      <div className="bg-zinc-100/10 rounded-2xl px-2 py-2 z-0">
+      <div className="bg-zinc-100/10 rounded-2xl px-2 py-2">
         <div className="flex flex-between ">
           <div className="p-2 flex-1">
             <p className="text-muted">Distance</p>

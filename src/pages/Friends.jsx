@@ -19,8 +19,8 @@ function Friends() {
         <h6 className="header-Font text-left">Friends</h6>
       </div>
       {/* story */}
-      <div className="flex gap-2 w-full mt-12 overflow-x-auto snap-x scroll-pl-6">
-        <div className="circle-avatar inset-ring-0 bg-mainBrand">
+      <div className="flex gap-2 w-full mt-8 overflow-x-auto snap-x scroll-pl-6">
+        <div className="circle-avatar inset-ring-0 bg-mainBrand size-13">
           <Plus size={32} />
         </div>
         <div className="circle-avatar inset-ring-green-400">

@@ -5,7 +5,7 @@ function FriendRow({ row }) {
   const weeklyKm = row?.weeklyKm ?? "--";
 
   return (
-    <div className="flex justify-between items-center rounded-2xl bg-zinc-100/10 p-4 w-full">
+    <div className="run-card">
       <div className="flex gap-1.5 items-center">
         <div className="circle-avatar size-13">
           <img
