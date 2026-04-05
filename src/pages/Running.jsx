@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Pause, Play, Camera, Square } from "lucide-react";
 import RunMap from "../components/RunMap";

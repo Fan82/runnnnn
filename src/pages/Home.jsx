@@ -16,7 +16,7 @@ function Home() {
     <div className="page-wrapper">
       {/* greeting */}
       <span className="text-muted">3 April 2026</span>
-      <h2 className="text-bold text-2xl mb-4">Timmy Chan</h2>
+      <h2 className="text-bold text-2xl mb-4">Nora</h2>
       {/* User's ranking */}
       <div className="mb-6">
         {/* stats big card */}

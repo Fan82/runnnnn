@@ -46,7 +46,7 @@ function BottomNav() {
               <Icon
                 size={isMiddle ? 32 : 20}
                 // 如果是中間按鈕且顏色固定，這裡可以用白色或特定顏色
-                className={`${isMiddle ? "text-white" : active ? "text-mainBrand" : "text-zinc-100/50"}`}
+                className={`${isMiddle ? "text-zinc-800" : active ? "text-mainBrand" : "text-zinc-100/50"}`}
               />
             </div>
 

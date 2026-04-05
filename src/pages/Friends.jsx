@@ -45,7 +45,7 @@ function Friends() {
           <button onClick={() => navigate("/searchpage")} className="p-2">
             <Search size={16} />
           </button>
-          <button onClick={() => navigate("/addpost")} className="p-2">
+          <button onClick={() => navigate("/creatpost")} className="p-2">
             <Plus />
           </button>
         </div>
