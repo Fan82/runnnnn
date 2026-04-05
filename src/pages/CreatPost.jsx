@@ -10,6 +10,8 @@ import {
   Users,
   SportShoe,
   Upload,
+  UserRoundPen,
+  MapPin,
 } from "lucide-react";
 import RunMap from "../components/RunMap";
 
@@ -167,6 +169,14 @@ function CreatPost() {
           className="w-full resize-none outline-0 "
           placeholder="Add a caption..."
         />
+        <div className="inline-flex justify-end gap-4">
+          <button className="bg-zinc-100/10 rounded-sm p-1">
+            <UserRoundPen />
+          </button>
+          <button className="bg-zinc-100/10 rounded-sm p-1">
+            <MapPin />
+          </button>
+        </div>
         <div className="rounded-2xl bg-zinc-100/10 px-2 py-2">
           <div className="flex gap-2 items-center mb-4">
             <SportShoe size={16} className="text-mainBrand" />
