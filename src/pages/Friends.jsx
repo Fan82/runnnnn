@@ -52,19 +52,19 @@ function Friends() {
         <h6 className="header-Font">Friends</h6>
       </div>
       {/* Story 區塊 */}
-      <div className="flex gap-3 w-full mt-16 overflow-x-auto snap-x scroll-pl-6 no-scrollbar">
+      <div className="flex gap-3 w-full mt-12 overflow-x-auto snap-x scroll-pl-6 no-scrollbar py-2">
         {stories.map((item, index) =>
           index === 0 ? (
             <div
               key="add"
-              className="circle-avatar flex-shrink-0 inset-ring-0 bg-mainBrand size-13 flex items-center justify-center text-white"
+              className="circle-avatar flex-shrink-0 ring-0 bg-mainBrand size-13 flex items-center justify-center text-white"
             >
               <Plus size={32} />
             </div>
           ) : (
             <div
               key={index}
-              className={`circle-avatar flex-shrink-0 ${index <= 2 ? "inset-ring-green-400" : ""}`}
+              className={`circle-avatar flex-shrink-0 ${index <= 2 ? "ring-2 ring-green-400" : ""}`}
             >
               <img
                 src={`https://i.pravatar.cc/150?img=${index}`}

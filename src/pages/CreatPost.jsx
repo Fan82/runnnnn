@@ -89,7 +89,7 @@ function CreatPost() {
         <div className="mb-2 flex items-center justify-between gap-4">
           <div className="circle-avatar size-13">
             <img
-              src="https://i.pravatar.cc/150?img=20"
+              src="https://i.pravatar.cc/150?img=57"
               alt=""
               className="circle-avatarImage"
             />

@@ -103,10 +103,11 @@ function Running() {
               onClick={() => navigate("/")}
               className="bg-zinc-800/80 rounded-4xl p-2"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={20} className="text-zinc-100" />
             </button>
           </div>
         </div>
+        <h6 className="header-Font text-center">Running</h6>
       </div>
       <p className="text-muted text-center mt-10 mb-4">Times</p>
       <h3 className="text-6xl text-bold text-center">{formatTime(time)}</h3>

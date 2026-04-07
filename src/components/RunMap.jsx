@@ -80,7 +80,7 @@ function RunMap({ coords, live = false }) {
     <div
       ref={mapRef}
       style={{ height: "200px", width: "100%" }}
-      className="rounded-2xl overflow-hidden"
+      className="rounded-xl overflow-hidden"
     />
   );
 }

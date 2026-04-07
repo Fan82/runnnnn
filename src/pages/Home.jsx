@@ -15,17 +15,17 @@ function Home() {
   return (
     <div className="page-wrapper">
       {/* greeting */}
-      <span className="text-muted">3 April 2026</span>
+      <span className="text-muted">20 April 2026</span>
       <h2 className="text-bold text-2xl mb-4">Nora</h2>
       {/* User's ranking */}
       <div className="mb-6">
         {/* stats big card */}
-        <div className="card w-full mb-4 bg-mainBrand text-zinc-800">
-          <p className="text-muted text-zinc-800">continued running streak</p>
-          <h3 className="text-5xl text-bold mt-4 mb-4 text-zinc-800">
+        <div className="card w-full mb-4 bg-mainBrand text-zinc-100">
+          <p className="text-muted text-zinc-100">continued running streak</p>
+          <h3 className="text-5xl text-bold mt-4 mb-4 text-zinc-100">
             12<span className="ml-1.5">days</span>
           </h3>
-          <p className="text-muted text-zinc-800">
+          <p className="text-muted text-zinc-100">
             more than last week, keep it up!
           </p>
         </div>
@@ -34,7 +34,7 @@ function Home() {
           <div className="card">
             <p className="text-muted">Weekly distance</p>
             <h6 className="text-bold text-2xl mt-2 mb-1 text-mainBrand">
-              18.4<span className="text-base ml-1.5">km</span>
+              18.4<span className="text-sm font-medium ml-1">km</span>
             </h6>
             <p className="inline text-mainBrand text-xs font-medium bg-mainBrand/10 rounded-4xl px-2 py-0.5">
               <TrendingUp size={14} className="inline mr-2" />4 km
@@ -43,7 +43,7 @@ function Home() {
           <div className="card">
             <p className="text-muted">Monthly days</p>
             <h6 className="text-bold text-2xl mt-2 mb-1 text-mainBrand">
-              14<span className="text-base ml-1.5">days</span>
+              14<span className="text-sm font-medium ml-1">days</span>
             </h6>
             <p className="inline text-red-500 text-xs font-medium bg-red-500/10 rounded-4xl px-2 py-0.5">
               <TrendingDown size={14} className="inline mr-2" />2 days

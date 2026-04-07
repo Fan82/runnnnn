@@ -45,6 +45,8 @@ const GROUPS_DATA = [
 
 function GroupCard({ group }) {
   const [saved, setSaved] = useState(false);
+  const fallbackAvatar =
+    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='100%' height='100%' fill='%233f3f46'/><circle cx='75' cy='58' r='28' fill='%2371717a'/><rect x='35' y='96' width='80' height='40' rx='20' fill='%2371717a'/></svg>";
 
   return (
     <div className="run-card flex-wrap mb-4">
@@ -55,7 +57,7 @@ function GroupCard({ group }) {
             {group.count} joining · {group.distance} · {group.time}
           </p>
         </div>
-        <button className="bg-mainBrand px-3 py-1.5 rounded-lg text-sm text-white font-medium">
+        <button className="bg-mainBrand px-3 py-1.5 rounded-lg text-sm text-zinc-100 font-medium">
           Join
         </button>
       </div>
@@ -64,6 +66,9 @@ function GroupCard({ group }) {
           <img
             key={i}
             src={`https://i.pravatar.cc/150?img=${img}`}
+            onError={(e) => {
+              e.currentTarget.src = fallbackAvatar;
+            }}
             className="size-7 rounded-full object-cover border-2 border-zinc-800"
             style={{ marginLeft: i === 0 ? 0 : "-8px" }}
           />
@@ -97,9 +102,26 @@ function Map() {
       zoomControl: false,
     }).setView([25.033, 121.5654], 14);
 
-    L.tileLayer(
+    const primaryTile = L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    ).addTo(mapInstance.current);
+    );
+
+    primaryTile.on("tileerror", () => {
+      // If primary tile host is blocked/unreachable, switch once to a stable fallback.
+      if (!mapInstance.current || mapInstance.current.hasLayer(fallbackTile))
+        return;
+      mapInstance.current.removeLayer(primaryTile);
+      fallbackTile.addTo(mapInstance.current);
+    });
+
+    const fallbackTile = L.tileLayer(
+      "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+      },
+    );
+
+    primaryTile.addTo(mapInstance.current);
 
     // 自己的位置
     L.circleMarker([25.033, 121.5654], {
@@ -133,7 +155,7 @@ function Map() {
       {/* 左上返回 */}
       <div className="absolute left-4 top-4 z-10">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/friends")}
           className="bg-zinc-800/80 rounded-4xl p-2"
         >
           <ChevronLeft size={20} />

@@ -20,9 +20,9 @@ function FriendRow({ row }) {
           </p>
         </div>
       </div>
-      <p className="text-mainBrand text-base font-bold">
+      <p className="text-mainBrand text-xl font-bold">
         {weeklyKm}
-        <span className="ml-0.5">km</span>
+        <span className="text-sm font-medium ml-1.5">km</span>
       </p>
     </div>
   );

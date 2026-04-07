@@ -5,6 +5,8 @@
     --color-bg: #141418;
     --color-mainBrand: #05df72;
     --inset-shadow-md: inset 0 3px #05df72;
+    --inset-shadow-tab: inset 0 -1px #f4f4f51a;
+    --inset-shadow-tab-active: inset 0 -2px #05df72;
 }
 
 @layer components {
@@ -21,7 +23,7 @@
     }
 
     .card {
-        @apply rounded-2xl bg-zinc-100/10 p-4 flex-1;
+        @apply rounded-2xl bg-zinc-100/10 p-3 flex-1;
     }
 
     .flex-between {
@@ -29,11 +31,11 @@
     }
 
     .button-main {
-        @apply w-full p-4 mt-3 mb-3 bg-green-400 text-zinc-100 font-bold text-xl rounded-2xl;
+        @apply w-full p-4 mt-3 mb-3 bg-green-400 text-zinc-800 font-bold text-xl rounded-2xl;
     }
 
     .header {
-        @apply fixed left-0 top-0 w-full px-8 py-4 text-zinc-100/50 text-sm font-normal text-center bg-bg z-10;
+        @apply fixed left-0 top-0 w-full px-8 py-4 text-zinc-100/50 text-sm font-normal text-center bg-bg z-10 min-h-20;
 
     }
 
