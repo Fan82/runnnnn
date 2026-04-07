@@ -42,7 +42,7 @@ function Friends() {
       {/* 加上 pb 避免被 BottomNav 擋住內容 */}
       <div className="header">
         <div className="nav">
-          <button onClick={() => navigate("/searchpage")} className="p-2">
+          <button onClick={() => navigate("/searchpage")} className="p-3">
             <Search size={16} />
           </button>
           <button onClick={() => navigate("/creatpost")} className="p-2">
