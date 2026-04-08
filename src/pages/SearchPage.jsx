@@ -1,5 +1,4 @@
 import { Search, X } from "lucide-react";
-import FriendList from "../components/FriendList";
 import { useNavigate } from "react-router-dom";
 
 function SearchPage() {
@@ -22,20 +21,19 @@ function SearchPage() {
         </button>
       </div>
       <div className="text-muted py-4">Recently Search</div>
+
       <div className="flex justify-between items-center">
-        <FriendList
-          list={{
-            name: "Mike Chen",
-          }}
-        />
-        <X size={20} />
-      </div>
-      <div className="flex justify-between items-center">
-        <FriendList
-          list={{
-            name: "Mike Chen",
-          }}
-        />
+        <div className="flex gap-1.5 items-center py-3 w-full mb-2">
+          <div className="circle-avatar size-8">
+            <img
+              src="https://i.pravatar.cc/150?img=21"
+              className="circle-avatarImage"
+            />
+          </div>
+          <div>
+            <h6 className="text-zinc-100 font-medium">Wendy</h6>
+          </div>
+        </div>
         <X size={20} />
       </div>
     </div>

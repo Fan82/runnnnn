@@ -3,10 +3,14 @@ import { Ellipsis, Heart, MessageCircle, Share } from "lucide-react";
 import RunMap from "./RunMap";
 
 function FriendPost({ post }) {
-  const name = post?.name;
-  const timeAgo = post?.timeAgo;
-  const stats = post?.stats;
-  const coords = post?.coords;
+  const {
+    name,
+    timeAgo,
+    stats,
+    coords,
+    content = "No description",
+    userId = 1,
+  } = post;
 
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(post?.likes ?? 24);
@@ -19,13 +23,14 @@ function FriendPost({ post }) {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="relative w-full pb-4 inset-shadow-[0px_-1px_0px_rgba(255,255,255,0.1)]">
+    <div className="relative flex flex-col gap-2 w-full mt-8 pb-8 inset-shadow-[0px_-1px_0px_rgba(255,255,255,0.1)]">
       {/* user info+ time */}
       <div className="flex gap-4 items-center justify-between mb-2">
         <div className="circle-avatar size-13">
           <img
-            src="https://i.pravatar.cc/150?img=1"
+            src={`https://i.pravatar.cc/150?img=${userId}`}
             className="circle-avatarImage"
+            alt={name}
           />
         </div>
         <div className="flex-3">
@@ -57,7 +62,7 @@ function FriendPost({ post }) {
         </div>
       </div>
       {/* data */}
-      <div className="card my-4">
+      <div className="bg-zinc-100/10 rounded-2xl px-2 py-2">
         <div className="flex flex-between ">
           <div className="p-2 flex-1">
             <p className="text-muted">Distance</p>
@@ -84,9 +89,7 @@ function FriendPost({ post }) {
         <RunMap coords={coords} />
       </div>
       {/* Post typing */}
-      <div className="text-muted my-4">
-        Moring run in the park! Feel AMAZING 🌞
-      </div>
+      <div className="text-bold">Moring run in the park! Feel AMAZING 🌞</div>
       <div className="flex items-center text-muted gap-4 mt-2">
         <button onClick={handleLike} className="flex items-center gap-1.5">
           <Heart

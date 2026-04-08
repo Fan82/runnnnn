@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Settings } from "lucide-react";
+import { MY_UPDATES } from "../data/mockData";
+import UpdatePost from "../components/UpdatePost";
+import ActivityCalendar from "../components/ActivityCalendar";
 import TabGroup from "../components/TabGroup";
 import BottomNav from "../components/BottomNav";
-import { Settings } from "lucide-react";
-import ActivityCalendar from "../components/ActivityCalendar";
-import UpdatePost from "../components/UpdatePost";
+
+const CURRENT_USER = {
+  name: "Nora",
+  handle: "@nora-0403",
+  location: "London 🇬🇧",
+  stats: {
+    totalKm: 128.4,
+    totalRuns: 42,
+    bestPace: `5'20"`,
+  },
+};
 
 const RecordSection = () => (
   <>
@@ -12,19 +24,21 @@ const RecordSection = () => (
       <div className="card">
         <p className="text-muted">Total</p>
         <h6 className="text-bold text-2xl mt-2 mb-1 text-mainBrand">
-          68.4<span className="text-sm font-medium ml-1.5">km</span>
+          {CURRENT_USER.stats.totalKm}
+          <span className="text-sm font-medium ml-1.5">km</span>
         </h6>
       </div>
       <div className="card">
         <p className="text-muted">Runs</p>
         <h6 className="text-bold text-2xl mt-2 mb-1 text-mainBrand">
-          14<span className="text-sm font-medium ml-1.5">times</span>
+          {CURRENT_USER.stats.totalRuns}
         </h6>
       </div>
       <div className="card">
-        <p className="text-muted">Avg Pace</p>
+        <p className="text-muted">Best pace</p>
         <h6 className="text-bold text-2xl mt-2 mb-1 text-mainBrand">
-          18.4<span className="text-sm font-medium ml-1.5">pace</span>
+          {CURRENT_USER.stats.bestPace}
+          <span className="text-sm font-medium ml-1.5 text-muted">/km</span>
         </h6>
       </div>
     </div>
@@ -33,21 +47,11 @@ const RecordSection = () => (
 );
 
 const UpdateSection = () => (
-  <>
-    <UpdatePost />
-    <UpdatePost />
-    <UpdatePost />
-    <UpdatePost />
-    <UpdatePost />
-    <UpdatePost />
-  </>
-);
-
-const PostsSection = () => (
-  <div className="text-muted text-center">No Updated</div>
-);
-const PhotoSection = () => (
-  <div className="text-muted text-center">No Upload Photos</div>
+  <div className="flex flex-col">
+    {MY_UPDATES.map((item) => (
+      <UpdatePost key={item.id} data={item} />
+    ))}
+  </div>
 );
 
 function Profile() {
@@ -68,7 +72,6 @@ function Profile() {
             <Settings />
           </button>
         </div>
-        {/* <h6 className="header-Font">Friends</h6> */}
       </div>
       <div className="mb-4 mt-12 flex items-center gap-6">
         <div className="inline-block circle-avatar ring-2 ring-green-400">
@@ -79,9 +82,9 @@ function Profile() {
           />
         </div>
         <div className="flex flex-col">
-          <h2 className="text-bold">Nora</h2>
-          <span className="text-muted">@nora_0403</span>
-          <span className="text-muted ">🇬🇧 London</span>
+          <h2 className="text-bold">{CURRENT_USER.name}</h2>
+          <span className="text-muted">{CURRENT_USER.handle}</span>
+          <span className="text-muted">{CURRENT_USER.location}</span>
         </div>
       </div>
       {/* 使用封裝好的 Tab 組件 */}

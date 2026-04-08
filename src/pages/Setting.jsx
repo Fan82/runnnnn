@@ -4,6 +4,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function Setting() {
   const navigate = useNavigate();
+  // 登出函式
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
+  };
 
   return (
     <div className="page-wrapper">
@@ -22,68 +27,74 @@ function Setting() {
       </div>
       <div className="flex flex-col gap-2 mt-12">
         <div className="text-muted pl-2 mb-2">Account</div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Edit profile
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Notifications
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Time management
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Account privacy
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Close friends
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Blocked
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Story and location
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Sharing
           <ChevronRight />{" "}
-        </div>
+        </button>
         <div className="text-muted pl-2 mb-2 mt-4">Preferences</div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Units
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Appearance
           <ChevronRight />{" "}
-        </div>
+        </button>
         <div className="text-muted pl-2 mb-2 mt-4">Support</div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Help
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Privacy center
           <ChevronRight />{" "}
-        </div>
+        </button>
         <div className="text-muted pl-2 mb-2 mt-4">Preferences</div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Units
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
           Account status
           <ChevronRight />{" "}
-        </div>
-        <div className="rounded-md p-2 flex items-center justify-between text-red-500/50">
+        </button>
+        <button
+          onClick={handleSignOut}
+          className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10"
+        >
+          Sign out
+        </button>
+        <button className="rounded-md p-2 flex items-center justify-between text-red-500/50">
           Delete account
-        </div>
+        </button>
       </div>
     </div>
   );

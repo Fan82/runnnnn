@@ -1,17 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
-// import TabButton from "../components/TabButton";
 import FriendRow from "../components/FriendRow";
 import { supabase } from "../supabase";
+import { MOCK_USERS } from "../data/mockData";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 function Home() {
   const navigate = useNavigate();
-  // 登出函式
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
-  };
+  // 模擬排行榜排序：按週里程數由高到低
+  const sortedFriends = [...MOCK_USERS].sort((a, b) => b.weeklyKm - a.weeklyKm);
+
   return (
     <div className="page-wrapper">
       {/* greeting */}
@@ -54,63 +52,21 @@ function Home() {
       {/* friend's ranking */}
       <p className="mb-3">Friend's ranking</p>
       <div className="flex-between flex-col">
-        <FriendRow
-          row={{
-            name: "Mike Chen",
-            lastRun: "2 hours ago",
-            stats: { distanceKm: 5.2, timeMin: 32, pace: "6'09\"" },
-            weeklyKm: "42",
-          }}
-        />
-        <FriendRow
-          row={{
-            name: "Alison",
-            lastRun: "4 hours ago",
-            stats: { distanceKm: 2.2, timeMin: 20, pace: "8'09\"" },
-            weeklyKm: "42",
-          }}
-        />
-        <FriendRow
-          row={{
-            name: "Mike Chen",
-            lastRun: "2 hours ago",
-            stats: { distanceKm: 5.2, timeMin: 32, pace: "6'09\"" },
-            weeklyKm: "42",
-          }}
-        />
-        <FriendRow
-          row={{
-            name: "Alison",
-            lastRun: "4 hours ago",
-            stats: { distanceKm: 2.2, timeMin: 20, pace: "8'09\"" },
-            weeklyKm: "42",
-          }}
-        />
-        <FriendRow
-          row={{
-            name: "Mike Chen",
-            lastRun: "2 hours ago",
-            stats: { distanceKm: 5.2, timeMin: 32, pace: "6'09\"" },
-            weeklyKm: "42",
-          }}
-        />
-        <FriendRow
-          row={{
-            name: "Alison",
-            lastRun: "4 hours ago",
-            stats: { distanceKm: 2.2, timeMin: 20, pace: "8'09\"" },
-            weeklyKm: "42",
-          }}
-        />
+        {sortedFriends.map((friend) => (
+          // 將資料轉化為 Row 需要的格式，或直接傳入 friend 物件
+          <FriendRow
+            key={friend.id}
+            row={{
+              name: friend.name,
+              lastRun: friend.lastRun,
+              stats: { pace: friend.pace },
+              weeklyKm: friend.weeklyKm,
+              avatar: friend.avatarId,
+            }}
+          />
+        ))}
       </div>
-      {/*start running button*/}
-      {/* <button onClick={() => navigate("/running")} className="button-main">
-        Start running
-      </button> */}
-      {/* log out */}
-      <button onClick={handleSignOut} className="bg-blue-900 opacity-0">
-        Sign out
-      </button>
+
       <BottomNav />
     </div>
   );

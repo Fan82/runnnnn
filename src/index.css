@@ -11,7 +11,7 @@
 
 @layer components {
     .page-wrapper {
-        @apply bg-bg min-h-screen w-full max-w-[100vw] text-zinc-100 px-4 pt-8 pb-16;
+        @apply bg-bg min-h-screen w-full max-w-[100vw] text-zinc-100 px-4 pt-8 pb-26;
     }
 
     .text-muted {
@@ -35,7 +35,7 @@
     }
 
     .header {
-        @apply fixed left-0 top-0 w-full px-8 py-4 text-zinc-100/50 text-sm font-normal text-center bg-bg z-10 min-h-20;
+        @apply fixed left-0 top-0 w-full px-8 py-4 text-zinc-100/50 text-sm font-normal text-center bg-bg z-10 min-h-[70px];
 
     }
 

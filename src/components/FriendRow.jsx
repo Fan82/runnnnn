@@ -1,28 +1,32 @@
 function FriendRow({ row }) {
-  const name = row?.name;
-  const lastRun = row?.lastRun ?? "--";
-  const stats = row?.stats;
-  const weeklyKm = row?.weeklyKm ?? "--";
+  const {
+    name = "Unknown",
+    lastRun = "N/A",
+    stats = {},
+    weeklyKm = 0,
+    avatar = 1,
+  } = row || {};
 
   return (
     <div className="run-card">
-      <div className="flex gap-1.5 items-center">
-        <div className="circle-avatar size-13">
+      <div className="flex gap-2 items-center">
+        <div className="circle-avatar size-12">
           <img
-            src="https://i.pravatar.cc/150?img=1"
+            src={`https://i.pravatar.cc/150?img=${avatar}`}
             className="circle-avatarImage"
+            alt={name}
           />
         </div>
         <div>
           <h6 className="text-zinc-100 font-medium">{name}</h6>
-          <p className="text-sm text-zinc-100/50">
-            Ran {lastRun} and {stats?.pace ?? `6'09"`}
+          <p className="text-muted">
+            {lastRun} · {stats.pace || "--"}
           </p>
         </div>
       </div>
       <p className="text-mainBrand text-xl font-bold">
         {weeklyKm}
-        <span className="text-sm font-medium ml-1.5">km</span>
+        <span className="text-sm font-medium ml-1">km</span>
       </p>
     </div>
   );
