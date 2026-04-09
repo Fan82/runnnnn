@@ -10,7 +10,7 @@ function BottomNav() {
   const items = [
     { label: "Today", path: "/", icon: Calendar },
     { label: "Friends", path: "/friends", icon: Users },
-    { label: "Running", path: "/running", icon: Play },
+    { label: "Go", path: "/running", icon: Play },
     { label: "Map", path: "/map", icon: Map },
     { label: "Me", path: "/profile", icon: User },
   ];
@@ -27,7 +27,7 @@ function BottomNav() {
             key={item.path}
             onClick={() => navigate(item.path)}
             className={`relative flex-1 flex flex-col items-center gap-0.5 p-3 transition-all 
-              ${isMiddle ? "flex-[1.5] scale-110" : "flex-1"} 
+              ${isMiddle ? "relative flex-[1.5] scale-110" : "flex-1"} 
               ${isMiddle ? "" : active ? "text-mainBrand inset-shadow-md" : "text-zinc-100/50"}
             `}
           >
@@ -36,7 +36,7 @@ function BottomNav() {
               className={`flex items-center justify-center rounded-full transition-all 
                 ${
                   isMiddle
-                    ? "absolute -top-4 size-16 bg-mainBrand shadow-lg ring-4 ring-bg" // 中間大圓圈，加了 ring 效果讓視覺更乾淨
+                    ? "absolute -top-13 size-16 bg-mainBrand shadow-lg ring-4 ring-bg" // 中間大圓圈，加了 ring 效果讓視覺更乾淨
                     : "size-8"
                 } 
                 ${!isMiddle && (active ? "bg-mainBrand/20" : "bg-zinc-50/10")}
@@ -45,14 +45,13 @@ function BottomNav() {
               {/* 2. 渲染 Icon */}
               <Icon
                 size={isMiddle ? 32 : 20}
-                // 如果是中間按鈕且顏色固定，這裡可以用白色或特定顏色
-                className={`${isMiddle ? "text-zinc-100" : active ? "text-mainBrand" : "text-zinc-100/50"}`}
+                className={`${isMiddle ? "text-zinc-800 opacity-0" : active ? "text-mainBrand" : "text-zinc-100/50"}`}
               />
             </div>
 
             {/* 文字標籤 */}
             <span
-              className={`text-xs mt-2 ${isMiddle ? "mt-6 opacity-0" : "opacity-100"} `}
+              className={`${isMiddle ? "absolute -top-10 text-4xl text-zinc-800 font-bold italic" : "text-xs opacity-100 mt-2"} `}
             >
               {item.label}
             </span>

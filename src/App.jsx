@@ -14,6 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route
           path="/"
           element={
@@ -22,14 +23,62 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/friends" element={<Friends />} />
-        <Route path="/searchpage" element={<SearchPage />} />
-        <Route path="/creatpost" element={<CreatPost />} />
-        <Route path="/setting" element={<Setting />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/running" element={<Running />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/friends"
+          element={
+            <ProtectedRoute>
+              <Friends />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/searchpage"
+          element={
+            <ProtectedRoute>
+              <SearchPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/creatpost"
+          element={
+            <ProtectedRoute>
+              <CreatPost />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/setting"
+          element={
+            <ProtectedRoute>
+              <Setting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/map"
+          element={
+            <ProtectedRoute>
+              <Map />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/running"
+          element={
+            <ProtectedRoute>
+              <Running />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

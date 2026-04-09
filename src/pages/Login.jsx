@@ -57,10 +57,11 @@ function Login() {
 
         {error && <p className="text-red-400 text-sm">{error}</p>}
 
+        {/* 移除 card class，避免 flex-1 和半透明背景干擾按鈕樣式 */}
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="card button-main"
+          className="button-main"
         >
           {loading ? "Loading..." : isSignUp ? "Sign up" : "Sign in"}
         </button>

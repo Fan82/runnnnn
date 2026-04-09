@@ -1,5 +1,4 @@
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   ChevronDown,
@@ -8,19 +7,19 @@ import {
   Globe,
   Lock,
   Users,
-  SportShoe,
-  Upload,
+  Footprints,
   UserRoundPen,
   MapPin,
+  Image,
 } from "lucide-react";
 import RunMap from "../components/RunMap";
 
 const DEFAULT_STATS = { distanceKm: 18.4, timeMin: 32, pace: `6'09"` };
 const DEFAULT_COORDS = [
-  { lat: 38.1895, lng: 92.217 },
-  { lat: 38.3129, lng: 92.125 },
-  { lat: 38.3907, lng: 92.293 },
-  { lat: 38.5013, lng: 92.138 },
+  { lat: 35.6895, lng: 139.6917 },
+  { lat: 35.695, lng: 139.7 },
+  { lat: 35.7, lng: 139.695 },
+  { lat: 35.695, lng: 139.685 },
 ];
 
 const AUDIENCE_CHOICES = [
@@ -34,25 +33,6 @@ function CreatPost() {
   const location = useLocation();
   const run = location.state?.run;
 
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-  });
-
-  const dropzoneStyle = {
-    border: "1px dashed #f5f4f480",
-    borderRadius: "1rem",
-    padding: "2rem",
-    textAlign: "center",
-    alignItems: "center",
-    backgroundColor: isDragActive ? "" : "",
-    cursor: "pointer",
-    transition: "border .24s ease-in-out",
-  };
-
   const stats = run?.stats ?? DEFAULT_STATS;
   const coords = run?.coords?.length ? run.coords : DEFAULT_COORDS;
 
@@ -65,9 +45,7 @@ function CreatPost() {
     AUDIENCE_CHOICES.find((o) => o.id === audienceId) ?? AUDIENCE_CHOICES[0];
   const AudienceIcon = current.Icon;
 
-  const handlePublish = () => {
-    navigate("/friends");
-  };
+  const handlePublish = () => navigate("/friends");
 
   return (
     <div className="page-wrapper">
@@ -85,13 +63,15 @@ function CreatPost() {
         </div>
         <h6 className="header-Font text-center">New Post</h6>
       </div>
+
       <div className="relative mt-14 flex flex-col gap-2 w-full">
+        {/* 用戶資訊列 */}
         <div className="mb-2 flex items-center justify-between gap-4">
-          <div className="circle-avatar size-13">
+          <div className="size-12 rounded-full overflow-hidden shrink-0">
             <img
               src="https://i.pravatar.cc/150?img=57"
-              alt=""
-              className="circle-avatarImage"
+              alt="Nora"
+              className="w-full h-full object-cover"
             />
           </div>
           <div className="min-w-0 flex-1">
@@ -120,6 +100,8 @@ function CreatPost() {
                         }}
                         className={`flex w-full items-center gap-2 p-3 text-left text-sm hover:bg-zinc-700 ${
                           audienceId === opt.id
+                            ? "text-mainBrand"
+                            : "text-zinc-100"
                         }`}
                       >
                         <Icon size={14} className="shrink-0" />
@@ -139,7 +121,6 @@ function CreatPost() {
             >
               <Ellipsis size={16} className="stroke-zinc-100/50" />
             </button>
-
             {showMenu && (
               <div className="absolute right-0 top-8 z-20 min-w-40 overflow-hidden rounded-2xl bg-zinc-800">
                 <button
@@ -158,6 +139,8 @@ function CreatPost() {
             )}
           </div>
         </div>
+
+        {/* Textarea — 最小高度 80px，視覺上明顯可輸入 */}
         <label className="sr-only" htmlFor="creatpost-caption">
           Caption
         </label>
@@ -166,66 +149,61 @@ function CreatPost() {
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           rows={3}
-          className="w-full resize-none outline-0 "
+          style={{ minHeight: "80px" }}
+          className="w-full resize-none outline-0 bg-transparent text-zinc-100 placeholder:text-zinc-100/30 text-sm"
           placeholder="Add a caption..."
         />
-        <div className="inline-flex justify-end gap-4">
-          <button className="bg-zinc-100/10 rounded-sm p-1">
-            <UserRoundPen />
+
+        {/* 工具按鈕 — 改用 rounded-xl 統一圓角語言 */}
+        <div className="inline-flex justify-end gap-2 mb-2">
+          <button className="bg-zinc-100/10 rounded-xl p-2">
+            <UserRoundPen size={18} />
           </button>
-          <button className="bg-zinc-100/10 rounded-sm p-1">
-            <MapPin />
+          <button className="bg-zinc-100/10 rounded-xl p-2">
+            <MapPin size={18} />
+          </button>
+          <button className="bg-zinc-100/10 rounded-xl p-2">
+            <Image size={18} />
           </button>
         </div>
-        <div className="rounded-2xl bg-zinc-100/10 px-2 py-2">
+
+        {/* 跑步資料卡 */}
+        <div className="rounded-2xl bg-zinc-100/10 px-3 py-3">
           <div className="flex gap-2 items-center mb-4">
-            <SportShoe size={16} className="text-mainBrand" />
-            <div className="text-muted">Today・6:20 </div>
+            <Footprints size={16} className="text-mainBrand" />
+            <div className="text-muted text-sm">Today · 6:20</div>
           </div>
-          <div className="flex flex-between mb-4">
+          <div className="flex gap-2 mb-4">
             <div className="flex-1">
               <p className="text-muted">Distance</p>
-              <h6 className="text-bold text-mainBrand text-xl">
+              <h6 className="text-bold text-zinc-100 text-xl">
                 {stats?.distanceKm ?? 18.4}
-                <span className="ml-1.5 text-muted">km</span>
+                <span className="ml-1.5 text-muted text-sm">km</span>
               </h6>
             </div>
             <div className="flex-1">
               <p className="text-muted">Time</p>
-              <h6 className="text-bold text-mainBrand text-xl">
+              <h6 className="text-bold text-zinc-100 text-xl">
                 {stats?.timeMin ?? 32}
-                <span className="ml-1.5 text-muted">min</span>
+                <span className="ml-1.5 text-muted text-sm">min</span>
               </h6>
             </div>
             <div className="flex-1">
               <p className="text-muted">Pace</p>
-              <h6 className="text-bold text-mainBrand text-xl">
+              <h6 className="text-bold text-zinc-100 text-xl">
                 {stats?.pace ?? `6'09"`}
-                <span className="ml-1.5 text-muted">/km</span>
+                <span className="ml-1.5 text-muted text-sm">/km</span>
               </h6>
             </div>
           </div>
           <RunMap coords={coords} />
         </div>
       </div>
-      <div
-        {...getRootProps()}
-        style={dropzoneStyle}
-        className="mt-4 text-muted"
-      >
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Add Photos</p>
-        ) : (
-          <p className="flex flex-col items-center gap-4">
-            <Upload size={45} /> Tap to upload from camera roll
-          </p>
-        )}
-      </div>
+
       <button
         type="button"
         onClick={handlePublish}
-        className="mt-4 w-full rounded-lg bg-mainBrand text-zinc-800 text-bold p-3"
+        className="mt-4 w-full rounded-2xl bg-mainBrand text-zinc-800 font-bold p-3"
       >
         Share
       </button>

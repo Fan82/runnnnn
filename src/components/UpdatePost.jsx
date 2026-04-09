@@ -70,21 +70,21 @@ function UpdatePost({ data }) {
         <div className="flex flex-between ">
           <div className="p-2 flex-1">
             <p className="text-muted">Distance</p>
-            <h6 className="text-bold text-mainBrand text-xl">
+            <h6 className="text-bold text-zinc-100 text-xl">
               {stats?.distance || "0"}
               <span className="text-sm ml-1 text-muted">km</span>
             </h6>
           </div>
           <div className="p-2 flex-1">
             <p className="text-muted">Time</p>
-            <h6 className="text-bold text-mainBrand text-xl">
+            <h6 className="text-bold text-zinc-100 text-xl">
               {stats?.time || "0"}
               <span className="ml-1.5 text-muted">min</span>
             </h6>
           </div>
           <div className="p-2 flex-1">
             <p className="text-muted">Pace</p>
-            <h6 className="text-bold text-mainBrand text-xl">
+            <h6 className="text-bold text-zinc-100 text-xl">
               {stats?.pace || "0"}
               <span className="ml-1.5 text-muted">/km</span>
             </h6>

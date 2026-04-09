@@ -2,7 +2,7 @@
 @import "leaflet/dist/leaflet.css";
 
 @theme {
-    --color-bg: #141418;
+    --color-bg: #070707;
     --color-mainBrand: #05df72;
     --inset-shadow-md: inset 0 3px #05df72;
     --inset-shadow-tab: inset 0 -1px #f4f4f51a;
@@ -23,7 +23,8 @@
     }
 
     .card {
-        @apply rounded-2xl bg-zinc-100/10 p-3 flex-1;
+        @apply rounded-2xl bg-zinc-100/10 p-3 flex-1 ring-1 ring-zinc-100/20;
+        /* border border-white/10 backdrop-blur-xl */
     }
 
     .flex-between {
@@ -48,7 +49,7 @@
     }
 
     .circle-avatar {
-        @apply shrink-0 rounded-full bg-zinc-50/10 overflow-hidden inset-ring-4 inset-ring-zinc-100/10 flex items-center justify-center;
+        @apply shrink-0 rounded-full bg-zinc-50/10 overflow-hidden inset-ring-2 inset-ring-zinc-100/10 flex items-center justify-center;
     }
 
     .circle-avatarImage {
@@ -56,7 +57,7 @@
     }
 
     .run-card {
-        @apply flex justify-between items-center rounded-2xl bg-zinc-100/10 p-4 w-full;
+        @apply flex justify-between items-center rounded-2xl bg-zinc-100/10 p-4 w-full ring-1 ring-zinc-100/20;
     }
 }
 

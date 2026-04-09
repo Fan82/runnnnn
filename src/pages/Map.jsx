@@ -57,7 +57,7 @@ function GroupCard({ group }) {
             {group.count} joining · {group.distance} · {group.time}
           </p>
         </div>
-        <button className="bg-mainBrand px-3 py-1.5 rounded-lg text-sm text-zinc-100 font-medium">
+        <button className="bg-mainBrand px-3 py-1.5 rounded-lg text-sm text-zinc-800 font-medium">
           Join
         </button>
       </div>
@@ -138,7 +138,7 @@ function Map() {
         className: "",
         html: `
           <div style="display:flex;flex-direction:column;align-items:flex-start">
-            <div style="background:#22c55e;padding:6px 12px;border-radius:20px;font-size:11px;color:white;font-weight:500;white-space:nowrap">
+            <div style="background:#22c55e;padding:6px 12px;border-radius:20px;font-size:11px;color:#2a2627;font-weight:500;white-space:nowrap">
               ${group.name} · ${group.count} joining
             </div>
             <div style="width:8px;height:8px;background:#22c55e;clip-path:polygon(0 0,100% 0,50% 100%);margin-left:12px"></div>

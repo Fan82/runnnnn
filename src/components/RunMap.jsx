@@ -2,12 +2,11 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-function RunMap({ coords, live = false }) {
+function RunMap({ coords, live = false, height = 200 }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const polylineRef = useRef(null);
 
-  // 初始化地圖
   useEffect(() => {
     if (mapInstance.current) return;
     if (!coords || coords.length === 0) return;
@@ -27,7 +26,6 @@ function RunMap({ coords, live = false }) {
     );
 
     if (!live) {
-      // 靜態模式：畫完整路線 + 起終點
       polylineRef.current.setLatLngs(coords.map((c) => [c.lat, c.lng]));
 
       L.circleMarker([coords[0].lat, coords[0].lng], {
@@ -51,7 +49,6 @@ function RunMap({ coords, live = false }) {
     }
   }, [coords]);
 
-  // 即時模式：每次 coords 更新就重畫
   useEffect(() => {
     if (
       !live ||
@@ -60,7 +57,6 @@ function RunMap({ coords, live = false }) {
       coords.length === 0
     )
       return;
-
     polylineRef.current.setLatLngs(coords.map((c) => [c.lat, c.lng]));
     const last = coords[coords.length - 1];
     mapInstance.current.setView([last.lat, last.lng], 16);
@@ -69,8 +65,8 @@ function RunMap({ coords, live = false }) {
   if (!coords || coords.length === 0)
     return (
       <div
-        style={{ height: "200px" }}
-        className="rounded-2xl bg-zinc-100/5 flex items-center justify-center"
+        style={{ height: `${height}px` }}
+        className="rounded-2xl bg-zinc-100/5 flex items-center justify-center overflow-hidden"
       >
         <p className="text-muted text-sm">No route data</p>
       </div>
@@ -79,7 +75,7 @@ function RunMap({ coords, live = false }) {
   return (
     <div
       ref={mapRef}
-      style={{ height: "200px", width: "100%" }}
+      style={{ height: `${height}px`, width: "100%" }}
       className="rounded-xl overflow-hidden"
     />
   );

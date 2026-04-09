@@ -19,6 +19,7 @@ export const MY_UPDATES = [
     shares: 8,
   },
 ];
+
 // Home 排行榜使用
 export const MOCK_USERS = [
   {
@@ -43,17 +44,27 @@ export const MOCK_USERS = [
     id: 3,
     name: "Jason",
     avatarId: 3,
-    lastRun: "Yesterday",
+    lastRun: "20 min ago",
     pace: "5'45\"",
     weeklyKm: 55,
     streakDays: 12,
   },
+  {
+    id: 4,
+    name: "Paul",
+    avatarId: 4,
+    lastRun: "yesterday",
+    pace: "9'45\"",
+    weeklyKm: 30,
+    streakDays: 3,
+  },
 ];
-// 朋友post
+
+// 朋友 post
 export const MOCK_POSTS = [
   {
     id: "1",
-    userId: 1, // 對應 Mike Chen
+    userId: 1,
     name: "Mike Chen",
     timeAgo: "10 min ago",
     content: "Morning run in the park! Feel AMAZING 🌞",
@@ -63,37 +74,67 @@ export const MOCK_POSTS = [
     shares: 12,
     coords: [
       { lat: 35.6895, lng: 139.6917 },
-      { lat: 35.69, lng: 139.6925 },
+      { lat: 35.695, lng: 139.7 },
+      { lat: 35.7, lng: 139.695 },
+      { lat: 35.695, lng: 139.685 },
+      { lat: 35.6895, lng: 139.6917 },
     ],
   },
   {
     id: "2",
-    userId: 2, // 對應 Alison
+    userId: 2,
     name: "Alison",
     timeAgo: "55 min ago",
     content: "Slow and steady wins the race 🐢",
-    stats: { distanceKm: 3.5, timeMin: 40, pace: "8'09\"" },
+    stats: { distanceKm: 3.5, timeMin: 28, pace: "8'00\"" },
     likes: 12,
     comments: 1,
     shares: 2,
     coords: [
       { lat: 35.7, lng: 139.7 },
-      { lat: 35.71, lng: 139.71 },
+      { lat: 35.705, lng: 139.705 },
+      { lat: 35.702, lng: 139.715 },
+      { lat: 35.71, lng: 139.72 },
     ],
   },
   {
     id: "3",
-    userId: 3, // 對應 Alison
+    userId: 3,
     name: "Jason",
     timeAgo: "2 hours ago",
     content: "Breaking my personal record today! 🔥",
-    stats: { distanceKm: 23.5, timeMin: 90, pace: "7'09\"" },
+    stats: { distanceKm: 23.5, timeMin: 168, pace: "7'09\"" },
     likes: 482,
     comments: 121,
     shares: 10,
     coords: [
-      { lat: 35.7, lng: 219.7 },
-      { lat: 35.71, lng: 219.71 },
+      { lat: 35.7, lng: 139.7 },
+      { lat: 35.75, lng: 139.75 },
+      { lat: 35.8, lng: 139.85 },
+      { lat: 35.85, lng: 139.95 },
+    ],
+  },
+  {
+    id: "4",
+    userId: 4,
+    name: "Paul",
+    timeAgo: "55 min ago",
+    content: "I did it! 🔥",
+    stats: { distanceKm: 40, timeMin: 300, pace: "7'09\"" },
+    likes: 1482,
+    comments: 221,
+    shares: 30,
+
+    coords: [
+      { lat: 35.7, lng: 139.7 },
+      { lat: 35.79, lng: 139.79 },
+      { lat: 35.79, lng: 139.92 },
+      { lat: 35.7, lng: 140.01 },
+      { lat: 35.61, lng: 140.01 },
+      { lat: 35.52, lng: 139.92 },
+      { lat: 35.52, lng: 139.79 },
+      { lat: 35.61, lng: 139.7 },
+      { lat: 35.7, lng: 139.7 },
     ],
   },
 ];

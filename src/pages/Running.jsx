@@ -1,9 +1,8 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Pause, Play, Camera, Square } from "lucide-react";
+import { ChevronLeft, RotateCcw, Play, Camera, Square } from "lucide-react";
 import RunMap from "../components/RunMap";
 
-// 模擬跑步座標（東京）
 const FAKE_COORDS = [
   { lat: 35.6895, lng: 139.6917 },
   { lat: 35.69, lng: 139.6925 },
@@ -19,14 +18,14 @@ const FAKE_COORDS = [
 
 function Running() {
   const navigate = useNavigate();
-  const [isRunning, setIsRunning] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | running | paused
   const [coords, setCoords] = useState([]);
   const [distance, setDistance] = useState(0);
   const [time, setTime] = useState(0);
   const timerRef = useRef(null);
   const simulateRef = useRef(null);
+  const coordIndexRef = useRef(0);
 
-  // 計算兩點之間距離（km）
   const calcDistance = (a, b) => {
     const R = 6371;
     const dLat = ((b.lat - a.lat) * Math.PI) / 180;
@@ -40,20 +39,25 @@ function Running() {
     return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
   };
 
-  const startRunning = () => {
-    setIsRunning(true);
-    setCoords([]);
-    setDistance(0);
-    setTime(0);
+  const calcPace = (distKm, seconds) => {
+    if (distKm <= 0 || seconds <= 0) return "--";
+    const paceSeconds = seconds / distKm;
+    const m = Math.floor(paceSeconds / 60);
+    const s = Math.floor(paceSeconds % 60)
+      .toString()
+      .padStart(2, "0");
+    return `${m}'${s}"`;
+  };
 
-    // 計時
-    timerRef.current = setInterval(() => {
-      setTime((t) => t + 1);
-    }, 1000);
+  const calcCalorie = (distKm) => {
+    if (distKm <= 0) return "--";
+    return Math.round(distKm * 65 * 1.036);
+  };
 
-    // 模擬跑步，每秒加一個座標
-    let i = 0;
+  const startTimers = () => {
+    timerRef.current = setInterval(() => setTime((t) => t + 1), 1000);
     simulateRef.current = setInterval(() => {
+      const i = coordIndexRef.current;
       if (i >= FAKE_COORDS.length) {
         clearInterval(simulateRef.current);
         return;
@@ -66,23 +70,38 @@ function Running() {
         }
         return [...prev, newCoord];
       });
-      i++;
+      coordIndexRef.current += 1;
     }, 1000);
   };
 
-  const stopRunning = () => {
-    setIsRunning(false);
+  const stopTimers = () => {
     clearInterval(timerRef.current);
     clearInterval(simulateRef.current);
   };
 
-  const resetRunning = () => {
-    setIsRunning(false);
-    clearInterval(timerRef.current);
-    clearInterval(simulateRef.current);
+  const handleStart = () => {
+    setStatus("running");
+    startTimers();
+  };
+  const handlePause = () => {
+    setStatus("paused");
+    stopTimers();
+  };
+  const handleResume = () => {
+    setStatus("running");
+    startTimers();
+  };
+  const handleStop = () => {
+    setStatus("idle");
+    stopTimers();
+  };
+  const handleReset = () => {
+    setStatus("idle");
+    stopTimers();
     setCoords([]);
     setDistance(0);
     setTime(0);
+    coordIndexRef.current = 0;
   };
 
   const formatTime = (s) => {
@@ -97,7 +116,6 @@ function Running() {
     <div className="page-wrapper">
       <div className="header">
         <div className="nav right-auto left-4">
-          {/* 左上返回 */}
           <div className="absolute left-4 top-4 z-10">
             <button
               onClick={() => navigate("/")}
@@ -109,46 +127,82 @@ function Running() {
         </div>
         <h6 className="header-Font text-center">Running</h6>
       </div>
-      <p className="text-muted text-center mt-10 mb-4">Times</p>
-      <h3 className="text-6xl text-bold text-center">{formatTime(time)}</h3>
-      <div className="flex-between mb-3 p-4">
+
+      <p className="text-muted text-center mt-10 mb-2">Time</p>
+      <h3 className="text-6xl text-bold text-center mb-4">
+        {formatTime(time)}
+      </h3>
+
+      <div className="flex-between mb-4 px-2">
         <div className="card text-center">
           <p className="text-muted">Distance</p>
           <h6 className="text-bold">
-            {distance.toFixed(2)} <span className="text-muted block">km</span>
+            {distance.toFixed(2)}
+            <span className="text-muted block text-xs">km</span>
           </h6>
         </div>
         <div className="card text-center">
           <p className="text-muted">Pace</p>
           <h6 className="text-bold">
-            --<span className="text-muted block">min/km</span>
+            {calcPace(distance, time)}
+            <span className="text-muted block text-xs">min/km</span>
           </h6>
         </div>
         <div className="card text-center">
           <p className="text-muted">Calorie</p>
           <h6 className="text-bold">
-            --<span className="text-muted block">kcal</span>
+            {calcCalorie(distance)}
+            <span className="text-muted block text-xs">kcal</span>
           </h6>
         </div>
       </div>
-      <RunMap coords={coords} live={true} />
-      <div className="flex-between items-center justify-center mt-4">
+
+      {/* 地圖放大 */}
+      <RunMap coords={coords} live={true} height={300} />
+
+      {/* 操作按鈕：左 = 重置、中 = 開始/暫停/繼續、右 = 停止 */}
+      <div className="flex items-center justify-center gap-8 mt-6">
         <button
-          onClick={resetRunning}
-          className="rounded-full w-1/6 aspect-square bg-zinc-100/10 flex items-center justify-center"
+          onClick={handleReset}
+          disabled={status === "idle"}
+          className="rounded-full w-12 h-12 bg-zinc-100/10 flex items-center justify-center disabled:opacity-30"
         >
-          <Pause size={20} />
+          <RotateCcw size={18} />
         </button>
+
+        {status === "running" ? (
+          <button
+            onClick={handlePause}
+            className="rounded-full w-16 h-16 bg-mainBrand flex items-center justify-center"
+          >
+            <div className="flex gap-1.5">
+              <div className="w-1 h-5 bg-zinc-800 rounded-sm" />
+              <div className="w-1 h-5 bg-zinc-800 rounded-sm" />
+            </div>
+          </button>
+        ) : (
+          <button
+            onClick={status === "paused" ? handleResume : handleStart}
+            className="rounded-full w-16 h-16 bg-mainBrand flex items-center justify-center"
+          >
+            <Play size={26} className="text-zinc-800 ml-1" />
+          </button>
+        )}
+
         <button
-          onClick={isRunning ? stopRunning : startRunning}
-          className="rounded-full w-1/4 aspect-square flex items-center justify-center bg-brand bg-red-500"
+          onClick={handleStop}
+          disabled={status === "idle"}
+          className="rounded-full w-12 h-12 bg-zinc-100/10 flex items-center justify-center disabled:opacity-30"
         >
-          {isRunning ? <Square size={24} /> : <Play size={24} />}
-        </button>
-        <button className="rounded-full w-1/6 aspect-square bg-zinc-100/10 flex items-center justify-center">
-          <Camera size={20} />
+          <Square size={18} />
         </button>
       </div>
+
+      {status === "paused" && (
+        <p className="text-center text-muted text-xs mt-3">
+          Paused · tap to resume
+        </p>
+      )}
     </div>
   );
 }

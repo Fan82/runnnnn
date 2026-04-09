@@ -9,7 +9,7 @@ function FriendRow({ row }) {
 
   return (
     <div className="run-card">
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center flex-1">
         <div className="circle-avatar size-12">
           <img
             src={`https://i.pravatar.cc/150?img=${avatar}`}
@@ -24,9 +24,10 @@ function FriendRow({ row }) {
           </p>
         </div>
       </div>
-      <p className="text-mainBrand text-xl font-bold">
+
+      <p className="text-zinc-100 text-xl font-bold">
         {weeklyKm}
-        <span className="text-sm font-medium ml-1">km</span>
+        <span className="text-muted ml-1">km</span>
       </p>
     </div>
   );

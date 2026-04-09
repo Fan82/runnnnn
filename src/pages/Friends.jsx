@@ -2,19 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { Search, Plus } from "lucide-react";
 import FriendPost from "../components/FriendPost";
 import BottomNav from "../components/BottomNav";
-import { MOCK_POSTS } from "../data/mockData";
+import { MOCK_POSTS, MOCK_USERS } from "../data/mockData";
+
+const STORY_USERS = MOCK_USERS.slice(0, 5);
 
 function Friends() {
   const navigate = useNavigate();
-  const stories = [0, 1, 2, 3, 4, 5, 6, 7];
-
-  // 2. 靜態定義貼文資料
-  const displayPosts = [...MOCK_POSTS, ...MOCK_POSTS, ...MOCK_POSTS];
 
   return (
     <div className="page-wrapper pb-24">
-      {" "}
-      {/* 加上 pb 避免被 BottomNav 擋住內容 */}
       <div className="header">
         <div className="nav">
           <button onClick={() => navigate("/searchpage")} className="p-3">
@@ -26,39 +22,49 @@ function Friends() {
         </div>
         <h6 className="header-Font">Friends</h6>
       </div>
-      {/* Story 區塊 */}
-      <div className="flex gap-3 w-full mt-12 overflow-x-auto snap-x scroll-pl-6 no-scrollbar py-2">
-        {stories.map((item, index) =>
-          index === 0 ? (
+
+      {/* Story 區塊 — 統一尺寸 56px，頭像加名字 */}
+      <div className="flex gap-4 w-full mt-12 overflow-x-auto snap-x no-scrollbar py-2">
+        {/* 新增 Story 按鈕 */}
+        <div className="flex flex-col items-center gap-1 shrink-0">
+          <div className="size-14 rounded-full bg-zinc-100/10 border-2 border-dashed border-zinc-100/30 flex items-center justify-center">
+            <Plus size={20} className="text-zinc-100/50" />
+          </div>
+          <span className="text-xs text-zinc-100/40 w-14 text-center truncate">
+            Your story
+          </span>
+        </div>
+
+        {STORY_USERS.map((user, index) => (
+          <div
+            key={user.id}
+            className="flex flex-col items-center gap-1 shrink-0"
+          >
             <div
-              key="add"
-              className="circle-avatar flex-shrink-0 ring-0 bg-mainBrand size-13 flex items-center justify-center text-white"
-            >
-              <Plus size={32} />
-            </div>
-          ) : (
-            <div
-              key={index}
-              className={`circle-avatar flex-shrink-0 ${index <= 2 ? "ring-2 ring-green-400" : ""}`}
+              className={`size-14 rounded-full overflow-hidden border-2 ${
+                index < 2 ? "border-mainBrand" : "border-zinc-100/20"
+              }`}
             >
               <img
-                src={`https://i.pravatar.cc/150?img=${index}`}
-                className="circle-avatarImage"
-                alt="friend"
+                src={`https://i.pravatar.cc/150?img=${user.avatarId}`}
+                alt={user.name}
+                className="w-full h-full object-cover"
               />
             </div>
-          ),
-        )}
-      </div>
-      {/* Friend List 區塊 */}
-      <div className="mt-6 flex flex-col gap-4">
-        {displayPosts.map((post, idx) => (
-          <FriendPost
-            key={`${post.id}-${idx}`} // 使用 id 搭配 index 確保 key 唯一
-            post={post}
-          />
+            <span className="text-xs text-zinc-100/50 w-14 text-center truncate">
+              {user.name.split(" ")[0]}
+            </span>
+          </div>
         ))}
       </div>
+
+      {/* 貼文列表 — 使用真實資料，不重複三倍 */}
+      <div className="mt-6 flex flex-col gap-4">
+        {MOCK_POSTS.map((post) => (
+          <FriendPost key={post.id} post={post} />
+        ))}
+      </div>
+
       <BottomNav />
     </div>
   );

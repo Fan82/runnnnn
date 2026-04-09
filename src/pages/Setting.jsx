@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { supabase } from "../supabase";
 
 function Setting() {
   const navigate = useNavigate();
-  // 登出函式
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/login");
@@ -28,67 +29,52 @@ function Setting() {
       <div className="flex flex-col gap-2 mt-12">
         <div className="text-muted pl-2 mb-2">Account</div>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Edit profile
-          <ChevronRight />{" "}
+          Edit profile <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Notifications
-          <ChevronRight />{" "}
+          Notifications <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Time management
-          <ChevronRight />{" "}
+          Time management <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Account privacy
-          <ChevronRight />{" "}
+          Account privacy <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Close friends
-          <ChevronRight />{" "}
+          Close friends <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Blocked
-          <ChevronRight />{" "}
+          Blocked <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Story and location
-          <ChevronRight />{" "}
+          Story and location <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Sharing
-          <ChevronRight />{" "}
+          Sharing <ChevronRight />
         </button>
+
         <div className="text-muted pl-2 mb-2 mt-4">Preferences</div>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Units
-          <ChevronRight />{" "}
+          Units <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Appearance
-          <ChevronRight />{" "}
+          Appearance <ChevronRight />
         </button>
+
         <div className="text-muted pl-2 mb-2 mt-4">Support</div>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Help
-          <ChevronRight />{" "}
+          Help <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Privacy center
-          <ChevronRight />{" "}
-        </button>
-        <div className="text-muted pl-2 mb-2 mt-4">Preferences</div>
-        <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Units
-          <ChevronRight />{" "}
+          Privacy center <ChevronRight />
         </button>
         <button className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10">
-          Account status
-          <ChevronRight />{" "}
+          Account status <ChevronRight />
         </button>
+
         <button
           onClick={handleSignOut}
-          className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10"
+          className="rounded-md p-2 flex items-center justify-between hover:bg-zinc-100/10 mt-4"
         >
           Sign out
         </button>
