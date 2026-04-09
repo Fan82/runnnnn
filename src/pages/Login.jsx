@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import appLogo from "../assets/app-logo.svg";
 import { supabase } from "../supabase";
 
 function Login() {
@@ -31,13 +32,16 @@ function Login() {
   };
 
   return (
-    <div className="page-wrapper">
-      <h1 className="text-bold text-2xl">
-        {isSignUp ? "Create account" : "Welcome back"}
-      </h1>
-      <p className="text-muted mb-8">
-        {isSignUp ? "Start tracking your runs" : "Sign in to continue"}
-      </p>
+    <div className="p-8 w-full h-screen flex flex-col justify-center gap-8">
+      <div>
+        <img src={appLogo} className="circle-avatarImage mb-5" alt="running" />
+        <h1 className="text-bold text-2xl">
+          {isSignUp ? "Create account" : "Welcome back"}
+        </h1>
+        <p className="text-muted">
+          {isSignUp ? "Start tracking your runs" : "Sign in to continue"}
+        </p>
+      </div>
 
       <div className="w-full flex flex-col gap-3">
         <input
@@ -74,6 +78,12 @@ function Login() {
             ? "Already have an account? Sign in"
             : "No account? Sign up"}
         </button>
+      </div>
+      <div className="fixed inset-0 -z-10 h-full w-full bg-bg overflow-hidden">
+        <div className="absolute -top-1/4 -left-1/4 h-full w-full rounded-full bg-mainBrand opacity-10 blur-[120px] animate-ghost-smooth" />
+        <div
+          className="absolute -bottom-1/3 -right-1/4 h-full w-full rounded-full bg-mainBrand opacity-5 blur-[100px]  animate-ghost-smooth animation-delay-500" // 需在 config 或任意值設定延遲
+        />
       </div>
     </div>
   );
