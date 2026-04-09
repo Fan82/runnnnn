@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, RotateCcw, Play, Camera, Square } from "lucide-react";
+import { ChevronLeft, RotateCcw, Play, Square } from "lucide-react";
 import RunMap from "../components/RunMap";
 
 const FAKE_COORDS = [
@@ -113,96 +113,98 @@ function Running() {
   };
 
   return (
-    <div className="page-wrapper">
-      <div className="header">
-        <div className="nav right-auto left-4">
-          <div className="absolute left-4 top-4 z-10">
-            <button
-              onClick={() => navigate("/")}
-              className="bg-zinc-800/80 rounded-4xl p-2"
-            >
-              <ChevronLeft size={20} className="text-zinc-100" />
-            </button>
+    <div className="relative w-full h-screen overflow-hidden text-zinc-100 bg-bg">
+      <RunMap
+        coords={coords}
+        live={true}
+        height="100vh"
+        initialCenter={FAKE_COORDS[0]}
+      />
+
+      <div className="absolute inset-x-0 top-0 z-10 bg-linear-to-b from-zinc-900/80 to-transparent px-4 pt-4 pb-6">
+        <div className="absolute left-4 top-4">
+          <button
+            onClick={() => navigate("/")}
+            className="bg-zinc-800/80 rounded-4xl p-2"
+          >
+            <ChevronLeft size={20} className="text-zinc-100" />
+          </button>
+        </div>
+
+        <p className="text-muted text-center mb-2 mt-10">Duration</p>
+        <h3 className="text-6xl text-bold text-center mb-4">
+          {formatTime(time)}
+        </h3>
+
+        <div className="flex-between gap-2">
+          <div className="card text-center flex-1">
+            <p className="text-muted">Distance</p>
+            <h6 className="text-bold">
+              {distance.toFixed(2)}
+              <span className="text-muted block text-xs">km</span>
+            </h6>
+          </div>
+          <div className="card text-center flex-1">
+            <p className="text-muted">Pace</p>
+            <h6 className="text-bold">
+              {calcPace(distance, time)}
+              <span className="text-muted block text-xs">min/km</span>
+            </h6>
+          </div>
+          <div className="card text-center flex-1">
+            <p className="text-muted">Calorie</p>
+            <h6 className="text-bold">
+              {calcCalorie(distance)}
+              <span className="text-muted block text-xs">kcal</span>
+            </h6>
           </div>
         </div>
-        <h6 className="header-Font text-center">Running</h6>
       </div>
 
-      <p className="text-muted text-center mt-10 mb-2">Time</p>
-      <h3 className="text-6xl text-bold text-center mb-4">
-        {formatTime(time)}
-      </h3>
-
-      <div className="flex-between mb-4 px-2">
-        <div className="card text-center">
-          <p className="text-muted">Distance</p>
-          <h6 className="text-bold">
-            {distance.toFixed(2)}
-            <span className="text-muted block text-xs">km</span>
-          </h6>
-        </div>
-        <div className="card text-center">
-          <p className="text-muted">Pace</p>
-          <h6 className="text-bold">
-            {calcPace(distance, time)}
-            <span className="text-muted block text-xs">min/km</span>
-          </h6>
-        </div>
-        <div className="card text-center">
-          <p className="text-muted">Calorie</p>
-          <h6 className="text-bold">
-            {calcCalorie(distance)}
-            <span className="text-muted block text-xs">kcal</span>
-          </h6>
-        </div>
-      </div>
-
-      {/* 地圖放大 */}
-      <RunMap coords={coords} live={true} height={300} />
-
-      {/* 操作按鈕：左 = 重置、中 = 開始/暫停/繼續、右 = 停止 */}
-      <div className="flex items-center justify-center gap-8 mt-6">
-        <button
-          onClick={handleReset}
-          disabled={status === "idle"}
-          className="rounded-full w-12 h-12 bg-zinc-100/10 flex items-center justify-center disabled:opacity-30"
-        >
-          <RotateCcw size={18} />
-        </button>
-
-        {status === "running" ? (
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-zinc-900/85 to-transparent px-4 pb-8 pt-10">
+        <div className="flex items-center justify-center gap-8">
           <button
-            onClick={handlePause}
-            className="rounded-full w-16 h-16 bg-mainBrand flex items-center justify-center"
+            onClick={handleReset}
+            disabled={status === "idle"}
+            className="rounded-full w-12 h-12 bg-zinc-100/10 flex items-center justify-center disabled:opacity-30"
           >
-            <div className="flex gap-1.5">
-              <div className="w-1 h-5 bg-zinc-800 rounded-sm" />
-              <div className="w-1 h-5 bg-zinc-800 rounded-sm" />
-            </div>
+            <RotateCcw size={18} />
           </button>
-        ) : (
+
+          {status === "running" ? (
+            <button
+              onClick={handlePause}
+              className="rounded-full w-16 h-16 bg-mainBrand flex items-center justify-center"
+            >
+              <div className="flex gap-1.5">
+                <div className="w-1 h-5 bg-zinc-800 rounded-sm" />
+                <div className="w-1 h-5 bg-zinc-800 rounded-sm" />
+              </div>
+            </button>
+          ) : (
+            <button
+              onClick={status === "paused" ? handleResume : handleStart}
+              className="rounded-full w-16 h-16 bg-mainBrand flex items-center justify-center"
+            >
+              <Play size={26} className="text-zinc-800 ml-1" />
+            </button>
+          )}
+
           <button
-            onClick={status === "paused" ? handleResume : handleStart}
-            className="rounded-full w-16 h-16 bg-mainBrand flex items-center justify-center"
+            onClick={handleStop}
+            disabled={status === "idle"}
+            className="rounded-full w-12 h-12 bg-zinc-100/10 flex items-center justify-center disabled:opacity-30"
           >
-            <Play size={26} className="text-zinc-800 ml-1" />
+            <Square size={18} />
           </button>
+        </div>
+
+        {status === "paused" && (
+          <p className="text-center text-muted text-xs mt-3">
+            Paused · tap to resume
+          </p>
         )}
-
-        <button
-          onClick={handleStop}
-          disabled={status === "idle"}
-          className="rounded-full w-12 h-12 bg-zinc-100/10 flex items-center justify-center disabled:opacity-30"
-        >
-          <Square size={18} />
-        </button>
       </div>
-
-      {status === "paused" && (
-        <p className="text-center text-muted text-xs mt-3">
-          Paused · tap to resume
-        </p>
-      )}
     </div>
   );
 }

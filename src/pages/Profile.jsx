@@ -51,7 +51,7 @@ const RecordSection = () => (
 );
 
 const UpdateSection = () => (
-  <div className="flex flex-col">
+  <div className="flex flex-col gap-2">
     {MY_UPDATES.map((item) => (
       <UpdatePost key={item.id} data={item} />
     ))}

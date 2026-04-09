@@ -2,20 +2,26 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-function RunMap({ coords, live = false, height = 200 }) {
+function RunMap({
+  coords,
+  live = false,
+  height = 200,
+  initialCenter = { lat: 25.033, lng: 121.5654 },
+}) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const polylineRef = useRef(null);
+  const mapHeight = typeof height === "number" ? `${height}px` : height;
 
   useEffect(() => {
     if (mapInstance.current) return;
-    if (!coords || coords.length === 0) return;
+    const firstPoint = coords && coords.length > 0 ? coords[0] : initialCenter;
 
     mapInstance.current = L.map(mapRef.current, {
       zoomControl: false,
       dragging: !live,
       scrollWheelZoom: false,
-    }).setView([coords[0].lat, coords[0].lng], 15);
+    }).setView([firstPoint.lat, firstPoint.lng], 15);
 
     L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
@@ -25,7 +31,7 @@ function RunMap({ coords, live = false, height = 200 }) {
       mapInstance.current,
     );
 
-    if (!live) {
+    if (!live && coords && coords.length > 0) {
       polylineRef.current.setLatLngs(coords.map((c) => [c.lat, c.lng]));
 
       L.circleMarker([coords[0].lat, coords[0].lng], {
@@ -47,7 +53,7 @@ function RunMap({ coords, live = false, height = 200 }) {
         },
       ).addTo(mapInstance.current);
     }
-  }, [coords]);
+  }, [coords, initialCenter, live]);
 
   useEffect(() => {
     if (
@@ -62,20 +68,10 @@ function RunMap({ coords, live = false, height = 200 }) {
     mapInstance.current.setView([last.lat, last.lng], 16);
   }, [coords, live]);
 
-  if (!coords || coords.length === 0)
-    return (
-      <div
-        style={{ height: `${height}px` }}
-        className="rounded-2xl bg-zinc-100/5 flex items-center justify-center overflow-hidden"
-      >
-        <p className="text-muted text-sm">No route data</p>
-      </div>
-    );
-
   return (
     <div
       ref={mapRef}
-      style={{ height: `${height}px`, width: "100%" }}
+      style={{ height: mapHeight, width: "100%" }}
       className="rounded-xl overflow-hidden"
     />
   );
