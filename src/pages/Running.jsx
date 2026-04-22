@@ -121,7 +121,7 @@ function Running() {
         initialCenter={FAKE_COORDS[0]}
       />
 
-      <div className="absolute inset-x-0 top-0 z-10 bg-linear-to-b from-zinc-900/80 to-transparent px-4 pt-4 pb-6">
+      <div className="absolute inset-x-0 top-8 z-10 bg-linear-to-b from-zinc-900/80 to-transparent px-4 pt-4 pb-6">
         <div className="absolute left-4 top-4">
           <button
             onClick={() => navigate("/")}

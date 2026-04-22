@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import StatusBar from "./components/StatusBar";
 import Running from "./pages/Running";
 import Friends from "./pages/Friends";
 import SearchPage from "./pages/SearchPage";
@@ -8,13 +9,16 @@ import Setting from "./pages/Setting";
 import Map from "./pages/Map";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter basename="/runnnnn/">
+      <StatusBar />
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/"
           element={

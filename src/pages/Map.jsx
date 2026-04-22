@@ -151,9 +151,9 @@ function Map() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden text-zinc-100">
+    <div className="relative w-full h-screen overflow-hidden text-zinc-100 ">
       {/* 左上返回 */}
-      <div className="absolute left-4 top-4 z-10">
+      <div className="absolute left-4 top-12 z-10">
         <button
           onClick={() => navigate("/friends")}
           className="bg-zinc-800/80 rounded-4xl p-2"
@@ -163,7 +163,7 @@ function Map() {
       </div>
 
       {/* 右上定位 */}
-      <div className="absolute right-4 top-4 z-10">
+      <div className="absolute right-4 top-12 z-10">
         <button
           onClick={() => mapInstance.current?.setView([25.033, 121.5654], 14)}
           className="bg-zinc-800/80 rounded-4xl p-2"
