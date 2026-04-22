@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import appLogo from "../assets/app-logo.svg";
-import { supabase } from "../supabase";
+
+// 假帳號設定
+const DEMO_EMAIL = "demo@example.com";
+const DEMO_PASSWORD = "demo1234";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -15,17 +17,14 @@ function Login() {
     setLoading(true);
     setError("");
 
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) setError(error.message);
-      else navigate("/");
+    // 模擬網路延遲
+    await new Promise((res) => setTimeout(res, 600));
+
+    if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
+      localStorage.setItem("demo_logged_in", "true");
+      navigate("/");
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) setError(error.message);
-      else navigate("/");
+      setError("Invalid email or password.");
     }
 
     setLoading(false);
@@ -35,12 +34,8 @@ function Login() {
     <div className="p-8 w-full h-screen flex flex-col justify-center gap-8">
       <div>
         <img src={appLogo} className="circle-avatarImage mb-5" alt="running" />
-        <h1 className="text-bold text-2xl">
-          {isSignUp ? "Create account" : "Welcome back"}
-        </h1>
-        <p className="text-muted">
-          {isSignUp ? "Start tracking your runs" : "Sign in to continue"}
-        </p>
+        <h1 className="text-bold text-2xl">Welcome back</h1>
+        <p className="text-muted">Sign in to continue</p>
       </div>
 
       <div className="w-full flex flex-col gap-3">
@@ -61,29 +56,18 @@ function Login() {
 
         {error && <p className="text-red-400 text-sm">{error}</p>}
 
-        {/* 移除 card class，避免 flex-1 和半透明背景干擾按鈕樣式 */}
         <button
           onClick={handleSubmit}
           disabled={loading}
           className="button-main"
         >
-          {loading ? "Loading..." : isSignUp ? "Sign up" : "Sign in"}
-        </button>
-
-        <button
-          onClick={() => setIsSignUp(!isSignUp)}
-          className="text-muted mt-2"
-        >
-          {isSignUp
-            ? "Already have an account? Sign in"
-            : "No account? Sign up"}
+          {loading ? "Loading..." : "Sign in"}
         </button>
       </div>
+
       <div className="fixed inset-0 -z-10 h-full w-full bg-bg overflow-hidden">
         <div className="absolute -top-1/4 -left-1/4 h-full w-full rounded-full bg-mainBrand opacity-10 blur-[120px] animate-ghost-smooth" />
-        <div
-          className="absolute -bottom-1/3 -right-1/4 h-full w-full rounded-full bg-mainBrand opacity-5 blur-[100px]  animate-ghost-smooth animation-delay-500" // 需在 config 或任意值設定延遲
-        />
+        <div className="absolute -bottom-1/3 -right-1/4 h-full w-full rounded-full bg-mainBrand opacity-5 blur-[100px] animate-ghost-smooth animation-delay-500" />
       </div>
     </div>
   );

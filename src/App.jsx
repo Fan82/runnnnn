@@ -12,7 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/runnnnn/">
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route

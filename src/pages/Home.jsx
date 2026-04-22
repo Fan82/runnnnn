@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import FriendRow from "../components/FriendRow";
-import { supabase } from "../supabase";
 import { MOCK_USERS } from "../data/mockData";
 import { TrendingUp, TrendingDown, Bell } from "lucide-react";
 
