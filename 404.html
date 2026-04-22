@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <script>
+      const path = window.location.pathname;
+      const search = window.location.search;
+      const hash = window.location.hash;
+      const redirect =
+        window.location.origin +
+        path.split("/").slice(0, 2).join("/") +
+        "/?p=" +
+        encodeURIComponent(path.slice(1) + search + hash);
+      window.location.replace(redirect);
+    </script>
+  </head>
+</html>
