@@ -23,7 +23,7 @@ function Register() {
   };
 
   return (
-    <div className="p-8 w-full h-screen flex flex-col justify-center gap-8 bg-bg overflow-hidden">
+    <div className="p-4 w-full h-screen flex flex-col justify-center gap-8 bg-bg overflow-hidden">
       <div>
         <img
           src={appLogo}

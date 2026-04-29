@@ -13,11 +13,11 @@ function Login() {
   };
 
   return (
-    <div className="p-8 w-full h-screen flex flex-col justify-center gap-8 bg-bg overflow-hidden">
+    <div className="p-4 w-full h-screen flex flex-col justify-center gap-8 bg-bg overflow-hidden">
       <div>
         <img
           src={appLogo}
-          className="size-44 rounded-4xl object-cover mb-5 ml-auto mr-auto"
+          className="size-24 rounded-4xl object-cover mb-5 ml-auto mr-auto"
           alt="running"
         />
         <h1 className="text-bold text-2xl">Welcome back</h1>

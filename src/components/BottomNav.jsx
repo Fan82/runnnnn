@@ -16,7 +16,7 @@ function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 right-0 left-0 w-full flex items-end justify-center bg-bg z-1 pb-1">
+    <div className="fixed bottom-0 right-0 left-0 w-full flex items-end justify-center bg-bg z-20 pb-1">
       {items.map((item, index) => {
         const active = location.pathname === item.path;
         const isMiddle = index === 2;

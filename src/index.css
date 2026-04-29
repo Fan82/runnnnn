@@ -24,7 +24,7 @@
     }
 
     .card {
-        @apply rounded-2xl bg-zinc-100/10 p-3 flex-1 ring-1 ring-zinc-100/20;
+        @apply rounded-2xl bg-zinc-100/10 p-4 flex-1 ring-1 ring-zinc-100/20;
         /* border border-white/10 backdrop-blur-xl */
     }
 
