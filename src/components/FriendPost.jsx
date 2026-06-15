@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Ellipsis, Heart, MessageCircle, Share } from "lucide-react";
 import RunMap from "./RunMap";
+import { isLiked, toggleLike } from "../utils/socialStorage";
 
 function FriendPost({ post }) {
   const {
+    id,
     name,
     timeAgo,
     stats,
@@ -12,13 +14,17 @@ function FriendPost({ post }) {
     userId = 1,
   } = post;
 
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(post?.likes ?? 24);
+  const baseLikes = post?.likes ?? 24;
+  const [liked, setLiked] = useState(() => isLiked("friend", id));
+  const [likes, setLikes] = useState(() =>
+    isLiked("friend", id) ? baseLikes + 1 : baseLikes,
+  );
   const [showMenu, setShowMenu] = useState(false);
 
   const handleLike = () => {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
+    const { liked: nextLiked } = toggleLike("friend", id);
+    setLiked(nextLiked);
+    setLikes(nextLiked ? baseLikes + 1 : baseLikes);
   };
 
   return (

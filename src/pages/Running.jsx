@@ -1,20 +1,17 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, RotateCcw, Play, Square } from "lucide-react";
 import RunMap from "../components/RunMap";
+import {
+  calcDistance,
+  calcPace,
+  calcCalorie,
+  formatTime,
+  saveRun,
+} from "../utils/runStorage";
 
-const FAKE_COORDS = [
-  { lat: 35.6895, lng: 139.6917 },
-  { lat: 35.69, lng: 139.6925 },
-  { lat: 35.6907, lng: 139.693 },
-  { lat: 35.6913, lng: 139.6938 },
-  { lat: 35.692, lng: 139.6945 },
-  { lat: 35.6926, lng: 139.6952 },
-  { lat: 35.6932, lng: 139.6958 },
-  { lat: 35.6938, lng: 139.6963 },
-  { lat: 35.6944, lng: 139.697 },
-  { lat: 35.695, lng: 139.6978 },
-];
+// 預設地圖中心（取得 GPS 前的 fallback，台北 101 附近）
+const DEFAULT_CENTER = { lat: 25.033, lng: 121.5654 };
 
 function Running() {
   const navigate = useNavigate();
@@ -22,61 +19,83 @@ function Running() {
   const [coords, setCoords] = useState([]);
   const [distance, setDistance] = useState(0);
   const [time, setTime] = useState(0);
+  const [geoError, setGeoError] = useState(null);
+  const [initialCenter, setInitialCenter] = useState(DEFAULT_CENTER);
+
   const timerRef = useRef(null);
-  const simulateRef = useRef(null);
-  const coordIndexRef = useRef(0);
+  const watchIdRef = useRef(null);
+  const lastCoordRef = useRef(null);
 
-  const calcDistance = (a, b) => {
-    const R = 6371;
-    const dLat = ((b.lat - a.lat) * Math.PI) / 180;
-    const dLng = ((b.lng - a.lng) * Math.PI) / 180;
-    const x =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((a.lat * Math.PI) / 180) *
-        Math.cos((b.lat * Math.PI) / 180) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
-  };
+  // 進入頁面先取得一次目前位置，當地圖初始中心
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setGeoError("此裝置不支援定位功能");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setInitialCenter({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+      },
+      () => {
+        // 取得失敗時保留 fallback 中心點，不阻擋使用
+      },
+      { enableHighAccuracy: true, timeout: 8000 },
+    );
 
-  const calcPace = (distKm, seconds) => {
-    if (distKm <= 0 || seconds <= 0) return "--";
-    const paceSeconds = seconds / distKm;
-    const m = Math.floor(paceSeconds / 60);
-    const s = Math.floor(paceSeconds % 60)
-      .toString()
-      .padStart(2, "0");
-    return `${m}'${s}"`;
-  };
-
-  const calcCalorie = (distKm) => {
-    if (distKm <= 0) return "--";
-    return Math.round(distKm * 65 * 1.036);
-  };
+    return () => stopTimers();
+  }, []);
 
   const startTimers = () => {
+    // 計時器：每秒 +1
     timerRef.current = setInterval(() => setTime((t) => t + 1), 1000);
-    simulateRef.current = setInterval(() => {
-      const i = coordIndexRef.current;
-      if (i >= FAKE_COORDS.length) {
-        clearInterval(simulateRef.current);
-        return;
-      }
-      const newCoord = FAKE_COORDS[i];
-      setCoords((prev) => {
-        if (prev.length > 0) {
-          const d = calcDistance(prev[prev.length - 1], newCoord);
-          setDistance((dist) => dist + d);
+
+    // GPS 持續定位
+    if (!navigator.geolocation) {
+      setGeoError("此裝置不支援定位功能");
+      return;
+    }
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        const newCoord = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        };
+
+        if (lastCoordRef.current) {
+          const d = calcDistance(lastCoordRef.current, newCoord);
+          // 過濾 GPS 飄移造成的不合理跳動（單次間隔超過 200m 視為異常，忽略）
+          if (d < 0.2) {
+            setDistance((dist) => dist + d);
+          } else {
+            return;
+          }
         }
-        return [...prev, newCoord];
-      });
-      coordIndexRef.current += 1;
-    }, 1000);
+
+        lastCoordRef.current = newCoord;
+        setCoords((prev) => [...prev, newCoord]);
+        setGeoError(null);
+      },
+      (err) => {
+        setGeoError(
+          err.code === 1
+            ? "請允許定位權限以記錄跑步軌跡"
+            : "無法取得目前位置，請確認 GPS 是否開啟",
+        );
+      },
+      { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 },
+    );
   };
 
   const stopTimers = () => {
     clearInterval(timerRef.current);
-    clearInterval(simulateRef.current);
+    if (watchIdRef.current !== null && navigator.geolocation) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+    }
   };
 
   const handleStart = () => {
@@ -94,6 +113,11 @@ function Running() {
   const handleStop = () => {
     setStatus("idle");
     stopTimers();
+
+    if (coords.length > 0) {
+      const record = saveRun({ coords, distance, time });
+      navigate("/run-summary", { state: { run: record } });
+    }
   };
   const handleReset = () => {
     setStatus("idle");
@@ -101,15 +125,7 @@ function Running() {
     setCoords([]);
     setDistance(0);
     setTime(0);
-    coordIndexRef.current = 0;
-  };
-
-  const formatTime = (s) => {
-    const m = Math.floor(s / 60)
-      .toString()
-      .padStart(2, "0");
-    const sec = (s % 60).toString().padStart(2, "0");
-    return `${m}:${sec}`;
+    lastCoordRef.current = null;
   };
 
   return (
@@ -118,7 +134,7 @@ function Running() {
         coords={coords}
         live={true}
         height="100vh"
-        initialCenter={FAKE_COORDS[0]}
+        initialCenter={initialCenter}
       />
 
       <div className="absolute inset-x-0 top-8 z-10 bg-linear-to-b from-zinc-900/80 to-transparent px-4 pt-4 pb-6">
@@ -135,6 +151,12 @@ function Running() {
         <h3 className="text-6xl text-bold text-center mb-4">
           {formatTime(time)}
         </h3>
+
+        {geoError && (
+          <p className="text-center text-red-400 text-xs mb-2 px-4">
+            {geoError}
+          </p>
+        )}
 
         <div className="flex-between gap-2">
           <div className="card text-center flex-1">

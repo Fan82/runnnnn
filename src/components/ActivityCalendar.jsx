@@ -11,9 +11,10 @@ import {
   isSameMonth,
   addMonths,
 } from "date-fns";
+import { getActivityDatesInMonth } from "../utils/runStorage";
 
 function ActivityCalendar() {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 3));
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const generateDatesMatrix = (month) => {
     const start = startOfWeek(startOfMonth(month));
@@ -23,19 +24,7 @@ function ActivityCalendar() {
 
   const datesMatrix = generateDatesMatrix(currentMonth);
 
-  const activityDays = [
-    "2026-04-01",
-    "2026-04-03",
-    "2026-04-04",
-    "2026-04-06",
-    "2026-04-07",
-    "2026-04-08",
-    "2026-04-10",
-    "2026-04-12",
-    "2026-04-14",
-    "2026-04-17",
-    "2026-04-19",
-  ];
+  const activityDays = getActivityDatesInMonth(currentMonth);
 
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(addMonths(currentMonth, -1));

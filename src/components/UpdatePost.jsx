@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Ellipsis, Heart, MessageCircle, Share } from "lucide-react";
 import RunMap from "./RunMap";
+import { isLiked, toggleLike } from "../utils/socialStorage";
 
 function UpdatePost({ data }) {
   const {
+    id,
     date,
     content,
     stats,
@@ -12,17 +14,17 @@ function UpdatePost({ data }) {
     shares,
     coords,
   } = data || {};
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(initialLikes ?? 0);
+
+  const baseLikes = initialLikes ?? 0;
+  const [liked, setLiked] = useState(() => isLiked("update", id));
+  const [likes, setLikes] = useState(() =>
+    isLiked("update", id) ? baseLikes + 1 : baseLikes,
+  );
 
   const handleLike = () => {
-    setLiked((prevLiked) => {
-      const nextLiked = !prevLiked;
-      setLikes((prevLikes) =>
-        nextLiked ? prevLikes + 1 : Math.max(0, prevLikes - 1),
-      );
-      return nextLiked;
-    });
+    const { liked: nextLiked } = toggleLike("update", id);
+    setLiked(nextLiked);
+    setLikes(nextLiked ? baseLikes + 1 : baseLikes);
   };
 
   const [showMenu, setShowMenu] = useState(false);

@@ -6,6 +6,7 @@ import UpdatePost from "../components/UpdatePost";
 import ActivityCalendar from "../components/ActivityCalendar";
 import TabGroup from "../components/TabGroup";
 import BottomNav from "../components/BottomNav";
+import { getOverallStats } from "../utils/runStorage";
 
 const CURRENT_USER = {
   name: "Nora",
@@ -14,41 +15,40 @@ const CURRENT_USER = {
   followers: 248,
   following: 91,
   postnumber: 2,
-  stats: {
-    totalKm: 128.4,
-    totalRuns: 42,
-    bestPace: `5'20"`,
-  },
 };
 
-const RecordSection = () => (
-  <>
-    <div className="flex-between mb-4">
-      <div className="card">
-        <p className="text-muted">Total</p>
-        <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
-          {CURRENT_USER.stats.totalKm}
-          <span className="text-muted ml-1.5">km</span>
-        </h6>
+const RecordSection = () => {
+  const stats = getOverallStats();
+
+  return (
+    <>
+      <div className="flex-between mb-4">
+        <div className="card">
+          <p className="text-muted">Total</p>
+          <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
+            {stats.totalKm}
+            <span className="text-muted ml-1.5">km</span>
+          </h6>
+        </div>
+        <div className="card">
+          <p className="text-muted">Runs</p>
+          <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
+            {stats.totalRuns}
+            <span className="text-muted ml-1.5">times</span>
+          </h6>
+        </div>
+        <div className="card">
+          <p className="text-muted">Best pace</p>
+          <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
+            {stats.bestPace}
+            <span className="text-muted ml-1.5">/km</span>
+          </h6>
+        </div>
       </div>
-      <div className="card">
-        <p className="text-muted">Runs</p>
-        <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
-          {CURRENT_USER.stats.totalRuns}
-          <span className="text-muted ml-1.5">times</span>
-        </h6>
-      </div>
-      <div className="card">
-        <p className="text-muted">Best pace</p>
-        <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
-          {CURRENT_USER.stats.bestPace}
-          <span className="text-muted ml-1.5">/km</span>
-        </h6>
-      </div>
-    </div>
-    <ActivityCalendar />
-  </>
-);
+      <ActivityCalendar />
+    </>
+  );
+};
 
 const UpdateSection = () => (
   <div className="flex flex-col gap-2">

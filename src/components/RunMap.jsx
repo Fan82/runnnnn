@@ -53,7 +53,19 @@ function RunMap({
         },
       ).addTo(mapInstance.current);
     }
-  }, [coords, initialCenter, live]);
+
+    // 容器尺寸在初始化時可能還沒 layout 完成（例如 100vh 高度），
+    // 延遲呼叫 invalidateSize 確保 Leaflet 用正確的尺寸計算 tiles 與繪圖
+    requestAnimationFrame(() => {
+      mapInstance.current && mapInstance.current.invalidateSize();
+    });
+  }, []);
+
+  // initialCenter 取得（例如 GPS 第一次定位回傳）後，重新置中地圖
+  useEffect(() => {
+    if (!mapInstance.current || (coords && coords.length > 0)) return;
+    mapInstance.current.setView([initialCenter.lat, initialCenter.lng], 15);
+  }, [initialCenter, coords]);
 
   useEffect(() => {
     if (

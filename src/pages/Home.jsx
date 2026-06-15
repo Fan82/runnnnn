@@ -3,18 +3,44 @@ import BottomNav from "../components/BottomNav";
 import FriendRow from "../components/FriendRow";
 import { MOCK_USERS } from "../data/mockData";
 import { TrendingUp, TrendingDown, Bell } from "lucide-react";
-
-// 本週每日跑量資料（週一到今天，單位 km）
-const WEEKLY_DATA = [2.1, 4.5, 0, 5.2, 3.8, 6.0, 18.4];
-const WEEKLY_MAX = Math.max(...WEEKLY_DATA);
-
-// Streak 連續天數
-const STREAK_DAYS = 7;
-const STREAK_TOTAL = 14; // 顯示格子總數
+import {
+  getWeeklyStats,
+  getStreakStats,
+  getMonthlyStats,
+} from "../utils/runStorage";
+import { format } from "date-fns";
 
 function Home() {
   const navigate = useNavigate();
   const sortedFriends = [...MOCK_USERS].sort((a, b) => b.weeklyKm - a.weeklyKm);
+
+  const today = new Date();
+  const {
+    dailyDistances,
+    totalKm: weeklyKm,
+    diffFromLastWeek: weeklyDiff,
+  } = getWeeklyStats();
+  const weeklyMax = Math.max(...dailyDistances, 1); // 避免全 0 時除以 0
+
+  const {
+    streakDays,
+    streakTotal,
+    diffFromLastWeek: streakDiff,
+  } = getStreakStats();
+
+  const {
+    activeDays,
+    totalDaysInMonth,
+    diffFromLastMonth: monthlyDiff,
+  } = getMonthlyStats(today);
+
+  // streak 文案：依本週與上週的連續天數差異呈現
+  const streakMessage =
+    streakDiff > 0
+      ? `${streakDiff} day${streakDiff > 1 ? "s" : ""} more than last week, keep it up!`
+      : streakDiff < 0
+        ? `${Math.abs(streakDiff)} day${Math.abs(streakDiff) > 1 ? "s" : ""} less than last week, let's catch up!`
+        : "same as last week, keep going!";
 
   return (
     <div className="page-wrapper">
@@ -28,7 +54,7 @@ function Home() {
             <Bell />
           </button>
         </div>
-        <span className="text-muted">20 April 2026</span>
+        <span className="text-muted">{format(today, "d MMMM yyyy")}</span>
         <h2 className="header-Font">Nora</h2>
       </div>
       {/* User's ranking */}
@@ -39,20 +65,18 @@ function Home() {
             continued running streak
           </p>
           <h3 className="text-6xl text-bold mt-3 mb-1 text-zinc-800 italic font-bold leading-none">
-            {STREAK_DAYS}
+            {streakDays}
             <span className="text-3xl ml-1.5">days</span>
           </h3>
-          <p className="text-zinc-800 italic font-bold mb-4">
-            more than last week, keep it up!
-          </p>
+          <p className="text-zinc-800 italic font-bold mb-4">{streakMessage}</p>
 
           {/* Streak progress dots */}
           <div className="flex gap-1.5">
-            {Array.from({ length: STREAK_TOTAL }).map((_, i) => (
+            {Array.from({ length: streakTotal }).map((_, i) => (
               <div
                 key={i}
                 className={`flex-1 h-1.5 rounded-full transition-all ${
-                  i < STREAK_DAYS ? "bg-zinc-800" : "bg-zinc-800/20"
+                  i < streakDays ? "bg-zinc-800" : "bg-zinc-800/20"
                 }`}
               />
             ))}
@@ -63,12 +87,13 @@ function Home() {
           <div className="card">
             <p className="text-muted">Weekly distance</p>
             <h6 className="text-bold text-2xl mt-2 mb-1 text-zinc-100">
-              18.4<span className="text-muted ml-1">km</span>
+              {weeklyKm.toFixed(1)}
+              <span className="text-muted ml-1">km</span>
             </h6>
             <div className="flex items-end gap-0.5 h-7 mb-2">
-              {WEEKLY_DATA.map((val, i) => {
-                const isToday = i === WEEKLY_DATA.length - 1;
-                const heightPct = WEEKLY_MAX > 0 ? (val / WEEKLY_MAX) * 100 : 0;
+              {dailyDistances.map((val, i) => {
+                const isToday = i === dailyDistances.length - 1;
+                const heightPct = (val / weeklyMax) * 100;
                 return (
                   <div
                     key={i}
@@ -80,27 +105,54 @@ function Home() {
                 );
               })}
             </div>
-            <p className="inline text-mainBrand text-xs font-medium bg-mainBrand/10 rounded-4xl px-2 py-1">
-              <TrendingUp size={14} className="inline mr-2" />4 km
+            <p
+              className={`inline text-xs font-medium rounded-4xl px-2 py-1 ${
+                weeklyDiff >= 0
+                  ? "text-mainBrand bg-mainBrand/10"
+                  : "text-red-500 bg-red-500/10"
+              }`}
+            >
+              {weeklyDiff >= 0 ? (
+                <TrendingUp size={14} className="inline mr-2" />
+              ) : (
+                <TrendingDown size={14} className="inline mr-2" />
+              )}
+              {Math.abs(weeklyDiff).toFixed(1)} km
             </p>
           </div>
           <div className="card">
             <p className="text-muted">Monthly days</p>
             <h6 className="text-bold text-2xl mt-2 mb-2 text-zinc-100">
-              25<span className="text-muted ml-1">days</span>
+              {activeDays}
+              <span className="text-muted ml-1">days</span>
             </h6>
 
             {/* Progress bar */}
             <div className="w-full bg-zinc-100/10 rounded-full h-1.5 mb-1">
               <div
                 className="bg-mainBrand/50 h-1.5 rounded-full"
-                style={{ width: `${(25 / 30) * 100}%` }}
+                style={{
+                  width: `${Math.min((activeDays / totalDaysInMonth) * 100, 100)}%`,
+                }}
               />
             </div>
-            <p className="text-muted text-xs mb-2">25 / 30 days</p>
+            <p className="text-muted text-xs mb-2">
+              {activeDays} / {totalDaysInMonth} days
+            </p>
 
-            <p className="inline text-red-500 text-xs font-medium bg-red-500/10 rounded-4xl px-2 py-1">
-              <TrendingDown size={14} className="inline mr-1" />2 days
+            <p
+              className={`inline text-xs font-medium rounded-4xl px-2 py-1 ${
+                monthlyDiff >= 0
+                  ? "text-mainBrand bg-mainBrand/10"
+                  : "text-red-500 bg-red-500/10"
+              }`}
+            >
+              {monthlyDiff >= 0 ? (
+                <TrendingUp size={14} className="inline mr-1" />
+              ) : (
+                <TrendingDown size={14} className="inline mr-1" />
+              )}
+              {Math.abs(monthlyDiff)} days
             </p>
           </div>
         </div>

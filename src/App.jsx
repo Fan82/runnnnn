@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import StatusBar from "./components/StatusBar";
 import Running from "./pages/Running";
+import RunSummary from "./pages/RunSummary";
 import Friends from "./pages/Friends";
 import SearchPage from "./pages/SearchPage";
 import CreatPost from "./pages/CreatPost";
@@ -80,6 +81,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Running />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/run-summary"
+          element={
+            <ProtectedRoute>
+              <RunSummary />
             </ProtectedRoute>
           }
         />

@@ -13,6 +13,7 @@ const StatusBar = () => (
       color: "#fff",
       fontWeight: 600,
       zIndex: 20,
+      background: "#070707",
     }}
   >
     <span>15:41</span>
